@@ -1,0 +1,103 @@
+
+
+
+GET    /preferential
+  - Res:   [
+             {
+                "id":"1",
+                "description":"Deficientes"
+             }, 
+             {
+                "id":"1",
+                "description":"Deficientes"
+             }
+              
+            ]
+
+GET    /preferential/{id}/vacancies
+  - Res: {
+          "id":"1",
+          "number": "15",
+          "ocupied":"true",
+          "description":"atrás do poste"
+          "preferential" : 
+              {
+                "id":"1",
+                "description":"Deficientes"
+              },
+          "assignedCustomer" : 
+              {
+                "id" : "1",
+                "name" : "asdasdasd",
+                "...." : "............."
+              }
+          }
+PUT    /preferential/{id}
+POST   /preferential/{id}
+  - Req: "description=descricao"
+  - Response: {"preferential" : 
+                {
+                  "id":"1",
+                  "description":"Deficientes"
+                }
+              }
+DELETE /preferential/{id}
+
+GET    /vacancies
+  - Res: [{
+          "id":"1",
+          "number": "15",
+          "ocupied":"true",
+          "description":"atrás do poste"
+          "preferential" : 
+              {
+                "id":"1",
+                "description":"Deficientes"
+              },
+          "assignedCustomer" : 
+              {
+                "id" : "1",
+                "name" : "asdasdasd",
+                "...." : "............."
+              }
+          }]
+GET    /vacancies/{id}
+POST   /vacancies
+PUT    /vacancies/{id}
+DELETE /vacancies/{id}
+
+GET    /vehicles
+GET    /vehicles/{id}
+POST   /vehicles/customers/{id}
+DELETE /vehicles/customers/{id}
+PUT    /vehicles/{id}
+
+GET    /customers
+GET    /customers/{id}
+GET    /customers/{id}/vehicles
+POST   /customers
+PUT    /customers/{id}
+DELETE /customers/{id}
+
+GET    /category
+PUT    /category/{id}
+POST   /category/{id}
+DELETE /category/{id}
+
+GET    /checkin
+POST   /checkin/vacancies/{id}/vehicle/{id}
+POST   /checkin/vehicle/{id}
+
+GET    /checkouts
+GET    /checkouts/vehicle/{id}/report (debits + time)
+
+POST   /checkouts/vehicle/{id}
+
+GET    /payments
+GET    /payments/{id}
+POST   /payments
+PUT    /payments/{id}
+DELETE /payments/{id}
+
+
+

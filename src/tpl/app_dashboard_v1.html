@@ -1,0 +1,341 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+    app.settings.asideFolded = false;
+    app.settings.asideDock = false;
+  ">
+  <!-- main -->
+  <div class="col">
+    <!-- main header -->
+    <div class="bg-light lter b-b wrapper-md">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <h1 class="m-n font-thin h3 text-black">Dashboard</h1>
+          <small class="text-muted">Bem vindo ao Int+!</small>
+        </div>
+        <div class="col-sm-6 text-right hidden-xs">
+          <div class="inline m-r text-left">
+            <div class="m-b-xs">1290 <span class="text-muted">Vendas realizadas</span></div>
+            <div ng-init="data1=[ 106,108,110,105,110,109,105,104,107,109,105,100,105,102,101,99,98 ]"
+              ui-jq="sparkline"
+              ui-options="{{data1}}, {type:'bar', height:20, barWidth:5, barSpacing:1, barColor:'#dce5ec'}"
+              class="sparkline inline">loading...
+            </div>
+          </div>
+          <div class="inline text-left">
+            <div class="m-b-xs">R$ 812.121,4 <span class="text-muted"> Estoque</span></div>
+            <div ng-init="data2=[ 105,106,107,108,109,111,112,113,109,108,108,109,110,109,110,109,110 ]"
+              ui-jq="sparkline"
+              ui-options="{{data2}}, {type:'bar', height:20, barWidth:5, barSpacing:1, barColor:'#dce5ec'}"
+              class="sparkline inline">loading...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- / main header -->
+    <div class="wrapper-md" ng-controller="FlotChartDemoCtrl">
+      <!-- stats -->
+      <div class="row">
+        <div class="col-md-5">
+          <div class="row row-sm text-center">
+            <div class="col-xs-6">
+              <div class="panel padder-v item">
+                <div class="h1 text-info font-thin h1">R$ 451.613,68</div>
+                <span class="text-muted text-xs">Em vendas realizadas</span>
+                <div class="top text-right w-full">
+                  <i class="fa fa-caret-up text-success m-r-sm"></i>
+                </div>
+                <span class="bottom text-right w-full">
+                  <i class="fa fa-dollar m-r-sm"></i>
+                </span>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <a href class="block panel padder-v bg-primary item">
+                <span class="text-white font-thin h1 block">R$ 82.132,23</span>
+                <span class="text-muted text-xs">Em serviços Realizados</span>
+                <div class="top text-right w-full">
+                  <i class="fa fa-caret-down text-danger m-r-sm"></i>
+                </div>
+                <span class="bottom text-right w-full">
+                  <i class="fa fa-life-ring text-muted m-r-sm"></i>
+                </span>
+              </a>
+            </div>
+            <div class="col-xs-6">
+              <a href class="block panel padder-v bg-info item">
+                <span class="text-white font-thin h1 block">R$ 812.121,45</span>
+                <span class="text-muted text-xs">Em produtos no estoque</span>
+
+              </a>
+            </div>
+            <div class="col-xs-6">
+              <div class="panel padder-v item">
+                <div class="font-thin h1">129</div>
+                <span class="text-muted text-xs">Retornos e-mail Marketing</span>
+                <div class="bottom text-left">
+                  <i class="fa fa-caret-up text-warning m-l-sm"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 m-b-md">
+              <div class="r bg-light dker item hbox no-border">
+                <div class="col w-xs v-middle hidden-md">
+                  <div ng-init="data1=[60,40]" ui-jq="sparkline" ui-options="{{data1}}, {type:'pie', height:40, sliceColors:['{{app.color.warning}}','#fff']}" class="sparkline inline"></div>
+                </div>
+                <div class="col dk padder-v r-r">
+                  <div class="text-primary-dk font-thin h1"><span>R$ 150.423,670</span></div>
+                  <span class="text-muted text-xs">Lucro, 60% do esperado</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-7">
+          <div class="panel wrapper">
+            <label class="i-switch bg-warning pull-right" ng-init="showSpline=true">
+              <input type="checkbox" ng-model="showSpline">
+              <i></i>
+            </label>
+            <h4 class="font-thin m-t-none m-b text-muted">Vendas comparando com agosto</h4>
+            <div ui-jq="plot" ui-refresh="showSpline" ui-options="
+              [
+                { data: {{d0_1}}, label:'Agosto', points: { show: true, radius: 1}, splines: { show: showSpline, tension: 0.4, lineWidth: 1, fill: 0.8 } },
+                { data: {{d0_2}}, label:'Setembro', points: { show: true, radius: 1}, splines: { show: showSpline, tension: 0.4, lineWidth: 1, fill: 0.8 } }
+              ],
+              {
+                colors: ['{{app.color.info}}', '{{app.color.primary}}'],
+                series: { shadowSize: 3 },
+                xaxis:{ font: { color: '#a1a7ac' } },
+                yaxis:{ font: { color: '#a1a7ac' }, max:20 },
+                grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#dce5ec' },
+                tooltip: true,
+                tooltipOpts: { content: 'Visits of %x.1 is %y.4',  defaultTheme: false, shifts: { x: 10, y: -25 } }
+              }
+            " style="height:246px" >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- / stats -->
+
+      <!-- service -->
+      <div class="panel hbox hbox-auto-xs no-border">
+        <div class="col wrapper">
+          <i class="fa fa-circle-o text-info m-r-sm pull-right"></i>
+          <h4 class="font-thin m-t-none m-b-none text-primary-lt">Retorno do e-mail Marketing</h4>
+          <span class="m-b block text-sm text-muted">Ano de 2015</span>
+          <div ui-jq="plot" ui-options="
+            [
+              { data: {{d4}}, lines: { show: true, lineWidth: 1, fill:true, fillColor: { colors: [{opacity: 0.0}, {opacity: 0.0}] } } }
+            ],
+            {
+              colors: ['{{app.color.light}}'],
+              series: { shadowSize: 3 },
+              xaxis:{ show:false },
+              yaxis:{ font: { color: '#a1a7ac' } },
+              grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#dce5ec' },
+              tooltip: true,
+              tooltipOpts: { content: '%s of %x.1 is %y.4',  defaultTheme: false, shifts: { x: 10, y: -25 } }
+            }
+          " style="height:240px" >
+          </div>
+        </div>
+        <div class="col wrapper-lg w-lg bg-light dk r-r">
+          <h4 class="font-thin m-t-none m-b">Metas</h4>
+          <div class="">
+            <div class="">
+              <span class="pull-right text-primary">60%</span>
+              <span>Vendas</span>
+            </div>
+            <progressbar value="60" class="progress-xs m-t-sm bg-white" animate="true" type="primary"></progressbar>
+            <div class="">
+              <span class="pull-right text-info">35%</span>
+              <span>E-mail Maketing</span>
+            </div>
+            <progressbar value="35" class="progress-xs m-t-sm bg-white" animate="true" type="info"></progressbar>
+
+          </div>
+          <p class="text-muted">Os valores acima se referem ao mês atual (Stembro)</p>
+        </div>
+      </div>
+      <!-- / service -->
+
+
+    </div>
+  </div>
+  <!-- / main -->
+  <!-- right col -->
+  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
+    <tabset class="nav-tabs-alt" justified="true">
+      <tab>
+        <tab-heading>
+          <i class="glyphicon glyphicon-user text-md text-muted wrapper-sm"></i>
+        </tab-heading>
+        <div class="wrapper-md">
+          <div class="m-b-sm text-md">Clientes</div>
+          <ul class="list-group no-bg no-borders pull-in">
+            <li class="list-group-item">
+              <a herf class="pull-left thumb-sm avatar m-r">
+                <img src="img/a4.jpg" alt="..." class="img-circle">
+                <i class="on b-white bottom"></i>
+              </a>
+              <div class="clear">
+                <div><a href>Luiz Cunha Rocha</a></div>
+                <small class="text-muted">Engenheiro Civil</small>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <a herf class="pull-left thumb-sm avatar m-r">
+                <img src="img/a5.jpg" alt="..." class="img-circle">
+                <i class="on b-white bottom"></i>
+              </a>
+              <div class="clear">
+                <div><a href>Igor Lima Gomes</a></div>
+                <small class="text-muted">Desenvolvedor</small>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <a herf class="pull-left thumb-sm avatar m-r">
+                <img src="img/a6.jpg" alt="..." class="img-circle">
+                <i class="busy b-white bottom"></i>
+              </a>
+              <div class="clear">
+                <div><a href>Antônio Cavalcanti Castro</a></div>
+                <small class="text-muted">Diretor de Arte</small>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <a herf class="pull-left thumb-sm avatar m-r">
+                <img src="img/a7.jpg" alt="..." class="img-circle">
+                <i class="away b-white bottom"></i>
+              </a>
+              <div class="clear">
+                <div><a href>Felipe Fernandes Oliveira</a></div>
+                <small class="text-muted">Autonômo</small>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <a herf class="pull-left thumb-sm avatar m-r">
+                <img src="img/a8.jpg" alt="..." class="img-circle">
+                <i class="away b-white bottom"></i>
+              </a>
+              <div class="clear">
+                <div><a href>Danilo Melo Goncalves</a></div>
+                <small class="text-muted">Designer</small>
+              </div>
+            </li>
+          </ul>
+          <div class="text-center">
+            <a href class="btn btn-sm btn-primary padder-md m-b">Adicionar cliente</a>
+          </div>
+        </div>
+      </tab>
+      <tab>
+        <tab-heading>
+          <i class="glyphicon glyphicon-comment text-md text-muted wrapper-sm"></i>
+        </tab-heading>
+        <div class="wrapper-md">
+          <div class="m-b-sm text-md">Chat</div>
+          <ul class="list-group no-borders pull-in auto">
+            <li class="list-group-item">
+              <span class="pull-left thumb-sm m-r"><img src="img/a1.jpg" alt="..." class="img-circle"></span>
+              <a href class="text-muted" ui-toggle-class="show" target=".app-aside-right"><i class="fa fa-comment-o pull-right m-t-sm text-sm"></i></a>
+              <div class="clear">
+                <div><a href="">Danilo Melo Goncalves</a></div>
+                <small class="text-muted">Há 3 minutos</small>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <span class="pull-left thumb-sm m-r"><img src="img/a2.jpg" alt="..." class="img-circle"></span>
+              <a href class="text-muted" ui-toggle-class="show" target=".app-aside-right"><i class="fa fa-comment-o pull-right m-t-sm text-sm"></i></a>
+              <div class="clear">
+                <div><a href="">Amanda Conlan</a></div>
+                <small class="text-muted">Há 5 minutos</small>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <span class="pull-left thumb-sm m-r"><img src="img/a3.jpg" alt="..." class="img-circle"></span>
+              <a href class="text-muted" ui-toggle-class="show" target=".app-aside-right"><i class="fa fa-comment-o pull-right m-t-sm text-sm"></i></a>
+              <div class="clear">
+                <div><a href="">Felipe Fernandes Oliveira</a></div>
+                <small class="text-muted">Há 3 dias</small>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <span class="pull-left thumb-sm m-r"><img src="img/a4.jpg" alt="..." class="img-circle"></span>
+              <a href class="text-muted" ui-toggle-class="show" target=".app-aside-right"><i class="fa fa-comment-o pull-right m-t-sm text-sm"></i></a>
+              <div class="clear">
+                <div><a href="">Júlio Taylor</a></div>
+                <small class="text-muted">Há 2 meses</small>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </tab>
+      <tab>
+        <tab-heading>
+          <i class="glyphicon glyphicon-transfer text-md text-muted wrapper-sm"></i>
+        </tab-heading>
+        <div class="wrapper-md">
+          <div class="m-b-sm text-md">Próximos Pagamentos</div>
+          <ul class="list-group list-group-sm list-group-sp list-group-alt auto m-t">
+            <li class="list-group-item">
+              <span class="text-muted">15/08 Aluguel</span>
+              <span class="block text-md text-danger">R$ 15,000.00</span>
+            </li>
+            <li class="list-group-item">
+              <span class="text-muted">16/08 FornecedorA </span>
+              <span class="block text-md text-danger">R$ 23,000.00</span>
+            </li>
+            <li class="list-group-item">
+              <span class="text-muted">17/08 Pagamento Antecipado</span>
+              <span class="block text-md text-success">R$ 3,000.00</span>
+            </li>
+            <li class="list-group-item">
+              <span class="text-muted">18/08 Manutenção TI</span>
+              <span class="block text-md text-danger">R$ 11,000.00</span>
+            </li>
+          </ul>
+        </div>
+      </tab>
+    </tabset>
+    <div class="padder-md">
+      <!-- streamline -->
+      <div class="m-b text-md">Agenda</div>
+      <div class="streamline b-l m-b">
+        <div class="sl-item b-primary b-l">
+          <div class="m-l">
+            <div class="text-muted">5 minutes ago</div>
+            <p>Comprar material no <a href class="text-info">Adjust Materiais</a></p>
+          </div>
+        </div>
+        <div class="sl-item b-primary b-l">
+          <div class="m-l">
+            <div class="text-muted">11:30</div>
+            <p>Video conferência</p>
+          </div>
+        </div>
+        <div class="sl-item b-primary b-l">
+          <div class="m-l">
+            <div class="text-muted">15:30</div>
+            <p>Ligar para o cliente <a href class="text-info">José</a> apresentar orçamento</p>
+          </div>
+        </div>
+        <div class="sl-item b-primary b-l">
+          <div class="m-l">
+            <div class="text-muted">17:30</div>
+            <p>Conferir Estoque</p>
+          </div>
+        </div>
+        </div>
+
+
+        </div>
+      </div>
+      <!-- / streamline -->
+    </div>
+    <div data-ng-include=" 'tpl/blocks/aside.right.html' ">
+    </div>
+  </div>
+  <!-- / right col -->
+</div>

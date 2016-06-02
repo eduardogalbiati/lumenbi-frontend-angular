@@ -1,0 +1,50 @@
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3"><i class="fa  fa-users"></i> Clientes</h1>
+</div>
+<div class="wrapper-md" ng-controller="ClientesTodosController">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+
+          <div class="panel-heading font-bold">
+           Todos Clientes
+            
+          </div>
+          <input type="text" style="display:none;" ng-model="abcParametros.mes" id="abcParametrosMes">
+          <div class="panel-body" style="">            
+            <div class="row" id="tableCurvaAbc">
+              <div class="col-md-12">
+
+
+                    
+                    <form>
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                            <input type="text" class="form-control" placeholder="Buscar cliente" ng-model="search.nomeCliente">
+                          </div>
+                        </div>
+                      
+                    </form>
+                      <div class="row">
+                          <div class="col-md-12" dir-paginate="item in clientes | orderBy:tableFilters.sortType:tableFilters.sortReverse | filter:search 
+                             | itemsPerPage: 10  " pagination-id="clientes">
+                          
+                            <span class="large-text">
+                              <span >{{item.pos}}º</span>
+                            </span>
+                            
+                          </div>
+                        </div>
+                    <div style="text-align:center;">
+                      <dir-pagination-controls  pagination-id="clientes"></dir-pagination-controls>
+                    </div>
+ 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>   
+

@@ -1,0 +1,819 @@
+
+<div ng-controller="ProdutosStatusController">
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3"><i class="fa fa-users"></i> Status dos Produtos
+    <div class="pull-right">
+     <div class="btn-group dropdown" dropdown="">
+            <button type="button" class="btn btn-default btn-xs" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+           {{parametros.mesIntervaloDesc}}
+            &nbsp;<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li ng-repeat="mes in parametros.mesesIntervalos track by $index">
+                <a ng-click="parametros.mesIntervalo = {{($index+1)}};parametros.mesIntervaloDesc = '{{mes}}';" href="">{{mes}}</a>
+              </li>
+            </ul>
+          </div>
+       <div class="dropdown chain clickable" dropdown="" >
+       <span dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+            {{parametros.mesDesc}}/{{parametros.ano}}
+            &nbsp;<span class="caret" ></span>
+            </span>
+            <ul class="dropdown-menu pull-right">
+              <li ng-repeat="mes in parametros.meses track by $index">
+                <a ng-click="parametros.mes = {{($index+1)}};parametros.mesDesc = '{{mes}}';" href="">{{mes}}</a>
+              </li>
+            </ul>
+
+          </div>
+
+    </div>
+  </h1>
+</div>
+<div class="wrapper-md">
+ 
+           <div class="row">
+        <div class="col-md-8">
+  <tabset class="tab-container">
+   <tab>
+      <tab-heading>
+        Positivos
+      </tab-heading>
+
+        <div class="panel panel-default">
+          <div class="panel-heading font-bold">
+          Ano {{parametros.ano}} Mês a Mês  (Qtd. X Mês)
+          <div class="pull-right">
+              Comparar com :
+              <div class="btn-group dropdown" dropdown="">
+                <button type="button" class="btn btn-default btn-xs" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+               {{parametros.anoComparativo}}
+                &nbsp;<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li ng-repeat="ano in app.anos">
+                    <a ng-click="parametros.anoComparativo = ano;" href="">{{ano}}</a>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+          <div class="panel-body" style="">      
+            <div ui-jq="plot" id="posChart" status-month-bind="posChart" ui-refresh="produtosComparativoHead" ui-options="
+             [
+
+                    { data: 
+                      {{produtosComparativoHead.itens.pos}}, 
+                      label: 'Produtos <b>Positivos</b> em <b>{{parametros.ano}}</b>',
+                      points: { show: true, radius: 6},
+                      splines: { show: true, tension: 0.45, lineWidth: 3, fill: 0 },
+
+                    },
+                    { data: 
+                      {{produtosComparativoHeadAnoPassado.itens.pos}}, 
+                      label: 'Produtos <b>Positivos</b> em <b>{{parametros.anoComparativo}}</b>',
+                      points: { show: true, radius: 6},
+                      splines: { show: true, tension: 0.45, lineWidth: 3, fill: 0 },
+                      clickable: false,
+                     
+
+                    }
+                  ],
+                  {
+                    'colors': [ '{{app.color.success}}','{{app.color.light}}'],
+                    series: { shadowSize: 3 },
+                    xaxis:{
+                      tickFilter : 'abcMonthFilter',
+                      font: { color: '#ccc' },
+                      position: 'bottom',
+                      ticks: [
+                        [ 1, '{{getLabel('1')}}' ], [ 2, '{{getLabel('2')}}' ], [ 3, '{{getLabel('3')}}' ], [ 4, '{{getLabel('4')}}' ], [ 5, '{{getLabel('5')}}' ], [ 6, '{{getLabel('6')}}' ], [ 7, '{{getLabel('7')}}' ], [ 8, '{{getLabel('8')}}' ], [ 9, '{{getLabel('9')}}' ], [ 10, '{{getLabel('10')}}' ], [ 11, '{{getLabel('11')}}' ], [ 12, '{{getLabel('12')}}' ]
+                      ]
+                    },
+                    yaxis:{ 
+                      font: { color: '#ccc' }
+                    },
+                    grid: { 
+                      hoverable: true, clickable: true, borderWidth: 0, color: '#ccc',
+                       markings: [ { xaxis: { from: {{parametros.mes}}, to: {{parametros.mes}} }, color: '{{app.color.danger}}' }]
+                    
+                       },
+                    tooltip: true,
+                    tooltipOpts: { content: '<b>%x</b> &nbsp;&nbsp; %y',  defaultTheme: false, shifts: { x: 0, y: 20 } },
+
+                  }
+              
+            " style="min-height:360px" >
+                  </div>
+                </div>
+              </div>
+             
+
+          <div class="panel panel-default">
+          <div class="panel-heading font-bold">
+          Produtos Positivos em {{parametros.mesDesc}}
+          </div>
+          <div class="panel-body" style="">  
+      <div class="table-responsive">
+        <form>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fa fa-search"></i></div>
+              <input type="text" class="form-control" placeholder="Buscar cliente" ng-model="posFilters.search">
+            </div>
+          </div>     
+        </form>
+          <table  class="table table-striped b-t b-b">
+            <thead>
+              <tr>
+                <th  style="width:50%">
+                  <a ng-click="posFilters.sortType = 'nomeProduto'; posFilters.sortReverse = !posFilters.sortReverse">Cliente</a>
+                  <span ng-show="posFilters.sortType == 'nomeProduto' && !posFilters.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="posFilters.sortType == 'nomeProduto' && posFilters.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                <th  style="width:10%">
+                  <a ng-click="posFilters.sortType = 'qtdTotal'; posFilters.sortReverse = !posFilters.sortReverse">Qtd</a>
+                  <span ng-show="posFilters.sortType == 'qtdTotal' && !posFilters.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="posFilters.sortType == 'qtdTotal' && posFilters.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                <th  style="width:20%">
+                  <a ng-click="posFilters.sortType = 'valorTotal'; posFilters.sortReverse = !posFilters.sortReverse">Valor Total</a>
+                  <span ng-show="posFilters.sortType == 'valorTotal' && !posFilters.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="posFilters.sortType == 'valorTotal' && posFilters.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                <th  style="width:20%">
+                  <a ng-click="posFilters.sortType = 'ultimaData'; posFilters.sortReverse = !posFilters.sortReverse">Última Venda</a>
+                  <span ng-show="posFilters.sortType == 'ultimaData' && !posFilters.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="posFilters.sortType == 'ultimaData' && posFilters.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                
+                
+              </tr>
+            </thead>
+            <tbody>
+              <tr dir-paginate="item in produtosPositivos 
+              | orderBy:posFilters.sortType:posFilters.sortReverse 
+              | filter:posFilters.search 
+              | itemsPerPage: 10  " pagination-id="produtosPositivos">
+               
+                <td>{{item.nomeProduto}}</td>
+                <td>{{item.qtdTotal}}</td>
+                <td>R$ {{item.valorTotal | moedaReal}}</td>
+                <td>{{item.ultimaData | asDate | date:"dd/MM/yy"}}</td>
+                
+              </tr>
+            </tbody>
+            </table>
+          </div>
+          <div style="text-align:center;">
+            <dir-pagination-controls pagination-id="produtosPositivos"></dir-pagination-controls>
+          </div>
+          </div>
+          </div>
+    </tab>
+    <tab>
+      <tab-heading>
+        Regulares
+      </tab-heading>
+       <div class="panel panel-default">
+          <div class="panel-heading font-bold">
+          Ano {{parametros.ano}} Mês a Mês  (Qtd. X Mês)
+           <div class="pull-right">
+              Comparar com :
+              <div class="btn-group dropdown" dropdown="">
+                <button type="button" class="btn btn-default btn-xs" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+               {{parametros.anoComparativo}}
+                &nbsp;<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li ng-repeat="ano in app.anos">
+                    <a ng-click="parametros.anoComparativo = ano;" href="">{{ano}}</a>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+          <div class="panel-body" style=""> 
+       <div ui-jq="plot" id="negChart" status-month-bind="negChart" ui-refresh="produtosComparativoHead" style="width:100%;height:400px" ui-options="
+             [
+
+                    { data: 
+                      {{produtosComparativoHead.itens.reg}}, 
+                      label: 'Produtos <b>Regulares</b> em <b>{{parametros.ano}}</b>',
+                      points: { show: true, radius: 6},
+                      splines: { show: true, tension: 0.45, lineWidth: 3, fill: 0 }
+
+                    },
+                     { data: 
+                      {{produtosComparativoHeadAnoPassado.itens.reg}}, 
+                      label: 'Produtos <b>Regulares</b> em <b>{{parametros.anoComparativo}}</b>',
+                      points: { show: true, radius: 6},
+                      splines: { show: true, tension: 0.45, lineWidth: 3, fill: 0 },
+                      clickable: false
+
+                    }
+                  ],
+                  {
+                    'colors': [ '{{app.color.warning}}','{{app.color.light}}' ],
+                    series: { shadowSize: 3 },
+                    xaxis:{
+                      tickFilter : 'abcMonthFilter',
+                      font: { color: '#ccc' },
+                      position: 'bottom',
+                      ticks: [
+                        [ 1, '{{getLabel('1')}}' ], [ 2, '{{getLabel('2')}}' ], [ 3, '{{getLabel('3')}}' ], [ 4, '{{getLabel('4')}}' ], [ 5, '{{getLabel('5')}}' ], [ 6, '{{getLabel('6')}}' ], [ 7, '{{getLabel('7')}}' ], [ 8, '{{getLabel('8')}}' ], [ 9, '{{getLabel('9')}}' ], [ 10, '{{getLabel('10')}}' ], [ 11, '{{getLabel('11')}}' ], [ 12, '{{getLabel('12')}}' ]
+                      ]
+                    },
+                    yaxis:{ 
+                      font: { color: '#ccc' }
+                    },
+                    grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc',
+                    markings: [ { xaxis: { from: {{parametros.mes}}, to: {{parametros.mes}} }, color: '{{app.color.danger}}' }] },
+                    tooltip: true,
+                    tooltipOpts: { content: '<b>%x</b> &nbsp;&nbsp; %y',  defaultTheme: false, shifts: { x: 0, y: 20 } },
+                    
+                  }
+              
+            " style="min-height:360px" >
+              </div>
+              </div>
+              </div>
+              <div class="panel panel-default">
+          <div class="panel-heading font-bold">
+          Produtos Regulares em {{parametros.mesDesc}}
+          </div>
+          <div class="panel-body" style="">  
+      <div class="table-responsive">
+       <form>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fa fa-search"></i></div>
+              <input type="text" class="form-control" placeholder="Buscar cliente" ng-model="regFilter.search">
+            </div>
+          </div>     
+        </form>
+          <table  class="table table-striped b-t b-b">
+            <thead>
+              <tr>
+                <th  style="width:50%">
+                  <a ng-click="regFilter.sortType = 'nomeProduto'; regFilter.sortReverse = !regFilter.sortReverse">Cliente</a>
+                  <span ng-show="regFilter.sortType == 'nomeProduto' && !regFilter.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="regFilter.sortType == 'nomeProduto' && regFilter.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                <th  style="width:10%">
+                  <a ng-click="regFilter.sortType = 'qtdTotal'; regFilter.sortReverse = !regFilter.sortReverse">Qtd</a>
+                  <span ng-show="regFilter.sortType == 'qtdTotal' && !regFilter.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="regFilter.sortType == 'qtdTotal' && regFilter.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                <th  style="width:20%">
+                  <a ng-click="regFilter.sortType = 'valorTotal'; regFilter.sortReverse = !regFilter.sortReverse">Valor Venda</a>
+                  <span ng-show="regFilter.sortType == 'valorTotal' && !regFilter.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="regFilter.sortType == 'valorTotal' && regFilter.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                <th  style="width:20%">
+                  <a ng-click="regFilter.sortType = 'ultimaData'; regFilter.sortReverse = !regFilter.sortReverse">Última Venda</a>
+                  <span ng-show="regFilter.sortType == 'ultimaData' && !regFilter.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="regFilter.sortType == 'ultimaData' && regFilter.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                
+                
+              </tr>
+            </thead>
+            <tbody>
+              <tr dir-paginate="itemReg in produtosRegulares 
+              | orderBy:regFilter.sortType:regFilter.sortReverse 
+              | filter:regFilter.search 
+              | itemsPerPage: 10  " pagination-id="produtosRegulares">
+               
+                <td>{{itemReg.nomeProduto}}</td>
+                <td>{{itemReg.qtdTotal}}</td>
+                <td>R$ {{itemReg.valorTotal}}</td>
+                <td>{{itemReg.ultimaData | asDate | date:"dd/MM/yy"}}</td>
+                
+              </tr>
+            </tbody>
+            </table>
+          </div>
+          <div style="text-align:center;">
+            <dir-pagination-controls pagination-id="produtosRegulares"></dir-pagination-controls>
+          </div>
+          </div>
+          </div>
+    </tab>
+    <tab>
+      <tab-heading>
+        Negativados
+      </tab-heading>
+       <div class="panel panel-default">
+          <div class="panel-heading font-bold">
+          Ano {{parametros.ano}} Mês a Mês  (Qtd. X Mês)
+           <div class="pull-right">
+              Comparar com :
+              <div class="btn-group dropdown" dropdown="">
+                <button type="button" class="btn btn-default btn-xs" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+               {{parametros.anoComparativo}}
+                &nbsp;<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li ng-repeat="ano in app.anos">
+                    <a ng-click="parametros.anoComparativo = ano;" href="">{{ano}}</a>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+          <div class="panel-body" style=""> 
+       <div ui-jq="plot" id="negChart" status-month-bind="negChart" ui-refresh="produtosComparativoHead" style="width:100%;height:400px" ui-options="
+             [
+
+                    { data: 
+                      {{produtosComparativoHead.itens.neg}}, 
+                      label: 'Produtos <b>Negativos</b> em <b>{{parametros.ano}}</b>',
+                      points: { show: true, radius: 6},
+                      splines: { show: true, tension: 0.45, lineWidth: 3, fill: 0 }
+
+                    },
+                     { data: 
+                      {{produtosComparativoHeadAnoPassado.itens.neg}}, 
+                      label: 'Produtos <b>Negativos</b> em <b>{{parametros.anoComparativo}}</b>',
+                      points: { show: true, radius: 6},
+                      splines: { show: true, tension: 0.45, lineWidth: 3, fill: 0 },
+                      clickable: false
+
+                    }
+                  ],
+                  {
+                    'colors': [ '{{app.color.danger}}','{{app.color.light}}' ],
+                    series: { shadowSize: 3 },
+                    xaxis:{
+                      tickFilter : 'abcMonthFilter',
+                      font: { color: '#ccc' },
+                      position: 'bottom',
+                      ticks: [
+                        [ 1, '{{getLabel('1')}}' ], [ 2, '{{getLabel('2')}}' ], [ 3, '{{getLabel('3')}}' ], [ 4, '{{getLabel('4')}}' ], [ 5, '{{getLabel('5')}}' ], [ 6, '{{getLabel('6')}}' ], [ 7, '{{getLabel('7')}}' ], [ 8, '{{getLabel('8')}}' ], [ 9, '{{getLabel('9')}}' ], [ 10, '{{getLabel('10')}}' ], [ 11, '{{getLabel('11')}}' ], [ 12, '{{getLabel('12')}}' ]
+                      ]
+                    },
+                    yaxis:{ 
+                      font: { color: '#ccc' }
+                    },
+                    grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc',
+                    markings: [ { xaxis: { from: {{parametros.mes}}, to: {{parametros.mes}} }, color: '{{app.color.danger}}' }] },
+                    tooltip: true,
+                    tooltipOpts: { content: '<b>%x</b> &nbsp;&nbsp; %y',  defaultTheme: false, shifts: { x: 0, y: 20 } },
+                    
+                  }
+              
+            " style="min-height:360px" >
+              </div>
+              </div>
+              </div>
+              <div class="panel panel-default">
+          <div class="panel-heading font-bold">
+          Produtos Negativados em {{parametros.mesDesc}}
+          </div>
+          <div class="panel-body" style="">  
+      <div class="table-responsive">
+       <form>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fa fa-search"></i></div>
+              <input type="text" class="form-control" placeholder="Buscar cliente" ng-model="negFilter.search">
+            </div>
+          </div>     
+        </form>
+          <table  class="table table-striped b-t b-b">
+            <thead>
+              <tr>
+                <th  style="width:50%">
+                  <a ng-click="negFilter.sortType = 'nomeProduto'; negFilter.sortReverse = !negFilter.sortReverse">Cliente</a>
+                  <span ng-show="negFilter.sortType == 'nomeProduto' && !negFilter.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="negFilter.sortType == 'nomeProduto' && negFilter.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                <th  style="width:10%">
+                  <a ng-click="negFilter.sortType = 'qtdTotal'; negFilter.sortReverse = !negFilter.sortReverse">Qtd</a>
+                  <span ng-show="negFilter.sortType == 'qtdTotal' && !negFilter.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="negFilter.sortType == 'qtdTotal' && negFilter.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                <th  style="width:20%">
+                  <a ng-click="negFilter.sortType = 'valorTotal'; negFilter.sortReverse = !negFilter.sortReverse">Valor Venda</a>
+                  <span ng-show="negFilter.sortType == 'valorTotal' && !negFilter.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="negFilter.sortType == 'valorTotal' && negFilter.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                <th  style="width:20%">
+                  <a ng-click="negFilter.sortType = 'ultimaData'; negFilter.sortReverse = !negFilter.sortReverse">Última Venda</a>
+                  <span ng-show="negFilter.sortType == 'ultimaData' && !negFilter.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="negFilter.sortType == 'ultimaData' && negFilter.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                
+                
+              </tr>
+            </thead>
+            <tbody>
+              <tr dir-paginate="itemNeg in produtosNegativos 
+              | orderBy:negFilter.sortType:negFilter.sortReverse 
+              | filter:negFilter.search 
+              | itemsPerPage: 10  " pagination-id="produtosNegativos">
+               
+                <td>{{itemNeg.nomeProduto}}</td>
+                <td>{{itemNeg.qtdTotal}}</td>
+                <td>R$ {{itemNeg.valorTotal}}</td>
+                <td>{{itemNeg.ultimaData | asDate | date:"dd/MM/yy"}}</td>
+                
+              </tr>
+            </tbody>
+            </table>
+          </div>
+          <div style="text-align:center;">
+            <dir-pagination-controls pagination-id="produtosNegativos"></dir-pagination-controls>
+          </div>
+          </div>
+          </div>
+    </tab>
+    <tab>
+      <tab-heading>
+        Recuperados 
+      </tab-heading>
+       <div class="panel panel-default">
+          <div class="panel-heading font-bold">
+          Ano {{parametros.ano}} Mês a Mês  (Qtd. X Mês)
+           <div class="pull-right">
+              Comparar com :
+              <div class="btn-group dropdown" dropdown="">
+                <button type="button" class="btn btn-default btn-xs" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+               {{parametros.anoComparativo}}
+                &nbsp;<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li ng-repeat="ano in app.anos">
+                    <a ng-click="parametros.anoComparativo = ano;" href="">{{ano}}</a>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+          <div class="panel-body" style=""> 
+      <div ui-jq="plot" id="recChart" status-month-bind="recChart" ui-refresh="produtosComparativoHead" style="width:100%;height:400px" ui-options="
+             [
+
+                    { data: 
+                      {{produtosComparativoHead.itens.rec}}, 
+                      label: 'Produtos <b>Recuperados</b> em <b>{{parametros.ano}}</b>',
+                      points: { show: true, radius: 6},
+                      splines: { show: true, tension: 0.45, lineWidth: 3, fill: 0 }
+
+                    },
+                     { data: 
+                      {{produtosComparativoHeadAnoPassado.itens.rec}}, 
+                      label: 'Produtos <b>Recuperados</b> em <b>{{parametros.anoComparativo}}</b>',
+                      points: { show: true, radius: 6},
+                      splines: { show: true, tension: 0.45, lineWidth: 3, fill: 0 },
+                      clickable: false
+
+                    }
+                  ],
+                  {
+                    'colors': [ '{{app.color.info}}','{{app.color.light}}' ],
+                    series: { shadowSize: 3 },
+                    xaxis:{
+                      tickFilter : 'abcMonthFilter',
+                      font: { color: '#ccc' },
+                      position: 'bottom',
+                      ticks: [
+                        [ 1, '{{getLabel('1')}}' ], [ 2, '{{getLabel('2')}}' ], [ 3, '{{getLabel('3')}}' ], [ 4, '{{getLabel('4')}}' ], [ 5, '{{getLabel('5')}}' ], [ 6, '{{getLabel('6')}}' ], [ 7, '{{getLabel('7')}}' ], [ 8, '{{getLabel('8')}}' ], [ 9, '{{getLabel('9')}}' ], [ 10, '{{getLabel('10')}}' ], [ 11, '{{getLabel('11')}}' ], [ 12, '{{getLabel('12')}}' ]
+                      ]
+                    },
+                    yaxis:{ 
+                      font: { color: '#ccc' }
+                    },
+                    grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc',
+                    markings: [ { xaxis: { from: {{parametros.mes}}, to: {{parametros.mes}} }, color: '{{app.color.danger}}' }] },
+                    tooltip: true,
+                    tooltipOpts: { content: '<b>%x</b> &nbsp;&nbsp; %y',  defaultTheme: false, shifts: { x: 0, y: 20 } },
+                    
+                  }
+              
+            " style="min-height:360px" >
+              </div>
+              </div>
+              </div>
+              <div class="panel panel-default">
+          <div class="panel-heading font-bold">
+          Produtos Recuperados em {{parametros.mesDesc}}
+          </div>
+          <div class="panel-body" style="">  
+      <div class="table-responsive">
+       <form>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fa fa-search"></i></div>
+              <input type="text" class="form-control" placeholder="Buscar cliente" ng-model="recFilter.search">
+            </div>
+          </div>     
+        </form>
+          <table  class="table table-striped b-t b-b">
+            <thead>
+              <tr>
+                <th  style="width:50%">
+                  <a ng-click="recFilter.sortType = 'nomeProduto'; recFilter.sortReverse = !recFilter.sortReverse">Cliente</a>
+                  <span ng-show="recFilter.sortType == 'nomeProduto' && !recFilter.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="recFilter.sortType == 'nomeProduto' && recFilter.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                <th  style="width:10%">
+                  <a ng-click="recFilter.sortType = 'qtdTotal'; recFilter.sortReverse = !recFilter.sortReverse">Qtd</a>
+                  <span ng-show="recFilter.sortType == 'qtdTotal' && !recFilter.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="recFilter.sortType == 'qtdTotal' && recFilter.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                <th  style="width:20%">
+                  <a ng-click="recFilter.sortType = 'valorTotal'; recFilter.sortReverse = !recFilter.sortReverse">Valor Venda</a>
+                  <span ng-show="recFilter.sortType == 'valorTotal' && !recFilter.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="recFilter.sortType == 'valorTotal' && recFilter.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                <th  style="width:20%">
+                  <a ng-click="recFilter.sortType = 'ultimaData'; recFilter.sortReverse = !recFilter.sortReverse">Última Venda</a>
+                  <span ng-show="recFilter.sortType == 'ultimaData' && !recFilter.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="recFilter.sortType == 'ultimaData' && recFilter.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                
+                
+              </tr>
+            </thead>
+            <tbody>
+              <tr dir-paginate="itemRec in produtosRecuperados 
+              | orderBy:recFilter.sortType:recFilter.sortReverse 
+              | filter:recFilter.search 
+              | itemsPerPage: 10  " pagination-id="produtosRecuperados">
+               
+                <td>{{itemRec.nomeProduto}}</td>
+                <td>{{itemRec.qtdTotal}}</td>
+                <td>R$ {{itemRec.valorTotal}}</td>
+                <td>{{itemRec.ultimaData | asDate | date:"dd/MM/yy"}}</td>
+                
+              </tr>
+            </tbody>
+            </table>
+          </div>
+          <div style="text-align:center;">
+            <dir-pagination-controls pagination-id="produtosRecuperados"></dir-pagination-controls>
+          </div>
+          </div>
+          </div>
+    </tab>
+    <tab>
+      <tab-heading>
+        Novos 
+      </tab-heading>
+       <div class="panel panel-default">
+          <div class="panel-heading font-bold">
+          Ano {{parametros.ano}} Mês a Mês  (Qtd. X Mês)
+           <div class="pull-right">
+              Comparar com :
+              <div class="dropdown" dropdown="">
+                <button type="button" class="btn btn-default btn-xs" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+               {{parametros.anoComparativo}}
+                &nbsp;<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li ng-repeat="ano in app.anos">
+                    <a ng-click="parametros.anoComparativo = ano;" href="">{{ano}}</a>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+          <div class="panel-body" style=""> 
+      <div ui-jq="plot" id="novChart" status-month-bind="novChart" ui-refresh="produtosComparativoHead" style="width:99%;height:350px" ui-options="
+             [
+
+                    { data: 
+                      {{produtosComparativoHead.itens.nov}}, 
+                      label: 'Produtos <b>Novos</b> em <b>{{parametros.ano}}</b>',
+                      points: { show: true, radius: 6},
+                      splines: { show: true, tension: 0.45, lineWidth: 3, fill: 0 }
+
+                    },
+
+
+                     { data: 
+                      {{produtosComparativoHeadAnoPassado.itens.nov}}, 
+                      label: 'Produtos <b>Novos</b> em <b>{{parametros.anoComparativo}}</b>',
+                      points: { show: true, radius: 6},
+                      splines: { show: true, tension: 0.45, lineWidth: 3, fill: 0 },
+                      clickable: false
+
+                    }
+                  ],
+                  {
+                    'colors': [ '{{app.color.primary}}','{{app.color.light}}' ],
+                    series: { shadowSize: 3 },
+                    xaxis:{
+                      tickFilter : 'abcMonthFilter',
+                      font: { color: '#ccc' },
+                      position: 'bottom',
+                      ticks: [
+                        [ 1, '{{getLabel('1')}}' ], [ 2, '{{getLabel('2')}}' ], [ 3, '{{getLabel('3')}}' ], [ 4, '{{getLabel('4')}}' ], [ 5, '{{getLabel('5')}}' ], [ 6, '{{getLabel('6')}}' ], [ 7, '{{getLabel('7')}}' ], [ 8, '{{getLabel('8')}}' ], [ 9, '{{getLabel('9')}}' ], [ 10, '{{getLabel('10')}}' ], [ 11, '{{getLabel('11')}}' ], [ 12, '{{getLabel('12')}}' ]
+                      ]
+                    },
+                    yaxis:{ 
+                      font: { color: '#ccc' }
+                    },
+                    grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc',
+                    markings: [ { xaxis: { from: {{parametros.mes}}, to: {{parametros.mes}} }, color: '{{app.color.danger}}' }] },
+                    tooltip: true,
+                    tooltipOpts: { content: '<b>%x</b> &nbsp;&nbsp; %y',  defaultTheme: false, shifts: { x: 0, y: 20 } },
+                    
+                  }
+              
+            " style="min-height:360px" >
+              </div>
+              </div>
+              </div>
+              <div class="panel panel-default">
+          <div class="panel-heading font-bold">
+          Produtos Novos em {{parametros.mesDesc}}
+          </div>
+          <div class="panel-body" style="">  
+       <div class="table-responsive">
+        <form>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fa fa-search"></i></div>
+              <input type="text" class="form-control" placeholder="Buscar cliente" ng-model="novFilter.search">
+            </div>
+          </div>     
+        </form>
+          <table  class="table table-striped b-t b-b">
+            <thead>
+              <tr>
+                <th  style="width:50%">
+                  <a ng-click="novFilter.sortType = 'nomeProduto'; novFilter.sortReverse = !novFilter.sortReverse">Cliente</a>
+                  <span ng-show="novFilter.sortType == 'nomeProduto' && !novFilter.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="novFilter.sortType == 'nomeProduto' && novFilter.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                <th  style="width:10%">
+                  <a ng-click="novFilter.sortType = 'qtdTotal'; novFilter.sortReverse = !novFilter.sortReverse">Qtd</a>
+                  <span ng-show="novFilter.sortType == 'qtdTotal' && !novFilter.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="novFilter.sortType == 'qtdTotal' && novFilter.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                <th  style="width:20%">
+                  <a ng-click="novFilter.sortType = 'valorTotal'; novFilter.sortReverse = !novFilter.sortReverse">Valor Venda</a>
+                  <span ng-show="novFilter.sortType == 'valorTotal' && !novFilter.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="novFilter.sortType == 'valorTotal' && novFilter.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                <th  style="width:20%">
+                  <a ng-click="novFilter.sortType = 'ultimaData'; novFilter.sortReverse = !novFilter.sortReverse">Última Venda</a>
+                  <span ng-show="novFilter.sortType == 'ultimaData' && !novFilter.sortReverse" class="fa fa-caret-down"></span>
+                  <span ng-show="novFilter.sortType == 'ultimaData' && novFilter.sortReverse" class="fa fa-caret-up"></span>
+                </th>
+                
+                
+              </tr>
+            </thead>
+         
+            <tbody>
+              <tr dir-paginate="itemNov in produtosNovos 
+              | orderBy:novFilter.sortType:novFilter.sortReverse 
+              | filter:novFilter.search 
+              | itemsPerPage: 10  " pagination-id="produtosNovos">
+               
+                <td>{{itemNov.nomeProduto}}</td>
+                <td>{{itemNov.qtdTotal}}</td>
+                <td>R$ {{itemNov.valorTotal}}</td>
+                <td>{{itemNov.ultimaData | asDate | date:"dd/MM/yy"}}</td>
+                
+              </tr>
+            </tbody>
+            </table>
+          </div>
+          <div style="text-align:center;">
+            <dir-pagination-controls pagination-id="produtosNovos"></dir-pagination-controls>
+          </div>
+          </div>
+          </div>
+    </tab>
+  </tabset>
+   </div>
+     <div class="col-md-4">
+                <div class="panel panel-default">
+                  <div class="panel-heading font-bold">
+                  Resumo de {{parametros.mesDesc}}
+                  </div>
+                  <div class="panel-body" style="">
+                  <div class="text-center">
+            <div ui-jq="sparkline" ui-refresh="produtosComparativo.pizza.chart" ui-options="
+            {{produtosComparativo.pizza.chart}}, 
+            {
+              tooltipPrefix:'R$ ',
+              numberDigitGroupSep: '.',
+              numberDecimalMark: ',',
+              type:'pie',
+              height:154,
+              sliceColors:[
+                '{{app.color.success}}',
+                '{{app.color.danger}}',
+                '{{app.color.info}}',
+                '{{app.color.primary}}',
+                '{{app.color.warning}}'
+              ]
+            }" class="sparkline inline"></div>
+            <div class="line pull-in"></div>
+          </div>
+                            </div>
+
+          <div class="list-group no-radius alt">
+            <div class="text-xs">
+              <span class="list-group-item">
+                <div class="row">
+                  <div class="col-md-6">
+                    <i class="fa fa-circle text-info" style="color:{{app.color.success}};"></i><span class="font-bold"> Positivos </span>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right">{{produtosComparativo.pizza.chart[0]}}%</span>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right">{{produtosComparativo.pizza.info[0]}}</span>
+                  </div>
+                </div>
+              </span>
+                <span class="list-group-item">
+                <div class="row">
+                  <div class="col-md-6">
+                    <i class="fa fa-circle text-info" style="color:{{app.color.warning}};"></i><span class="font-bold"> Regulares </span>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right">{{produtosComparativo.pizza.chart[4]}}%</span>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right">{{produtosComparativo.pizza.info[4]}}</span>
+                  </div>
+                </div>
+              </span>
+
+              <span class="list-group-item">
+                <div class="row">
+                  <div class="col-md-6">
+                    <i class="fa fa-circle text-info" style="color:{{app.color.danger}};"></i><span class="font-bold"> Negativos </span>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right">{{produtosComparativo.pizza.chart[1]}}%</span>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right">{{produtosComparativo.pizza.info[1]}}</span>
+                  </div>
+                </div>
+              </span>
+              <span class="list-group-item">
+                <div class="row">
+                  <div class="col-md-6">
+                    <i class="fa fa-circle text-info" style="color:{{app.color.info}};"></i><span class="font-bold"> Recuperados </span>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right">{{produtosComparativo.pizza.chart[2]}}%</span>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right">{{produtosComparativo.pizza.info[2]}}</span>
+                  </div>
+                </div>
+              </span>
+              <span class="list-group-item">
+                <div class="row">
+                  <div class="col-md-6">
+                    <i class="fa fa-circle text-info" style="color:{{app.color.primary}};"></i><span class="font-bold"> Novos </span>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right">{{produtosComparativo.pizza.chart[3]}}%</span>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right">{{produtosComparativo.pizza.info[3]}}</span>
+                  </div>
+                </div>
+              </span>
+
+             
+               <span class="list-group-item">
+                <div class="row">
+                  <div class="col-md-6">
+                    <span class="font-bold"> Total </span>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right">100%</span>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="pull-right">{{produtosComparativo.pizza.total}}</span>
+                  </div>
+                </div>
+              </span>
+
+           
+            </div>
+          </div>
+                </div>
+              </div>
+            
+              </div>
+</div>
+</div>

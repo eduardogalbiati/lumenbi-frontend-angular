@@ -1,0 +1,263 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+    app.settings.asideFolded = true; 
+    app.settings.asideDock = true;
+  ">
+  <!-- main -->
+  <div class="col">
+    <div class="bg-black dker wrapper-lg" ng-controller="CronogramaController">
+        <div class="row">
+        <div class="col-md-4">
+          
+          <div ui-jq="plot" ui-options="
+              [
+                { data: [[0,0],[1,5],[2,15],[3,20],[4,22],[5,25],[6,27],[7,30],[8,31]], points: { show: true, radius: 6}, splines: { show: true, tension: 0.45, lineWidth: 5, fill: 0 } }
+              ],
+              {
+                colors: ['{{app.color.info}}'],
+                series: { shadowSize: 3 },
+                xaxis:{
+                  font: { color: '#ccc' },
+                  position: 'bottom',
+                  ticks: [
+                    [ 1, '1 Mês' ], [ 2, '2 Mês' ], [ 3, '3 Mês' ], [ 4, '4 Mês' ], [ 5, '5 Mês' ], [ 6, '6 Mês' ], [ 7, '7 Mês' ], [ 8, '8 Mês' ], [ 9, 'Sep' ], [ 10, 'Oct' ], [ 11, 'Nov' ], [ 12, 'Dec' ]
+                  ]
+                },
+                yaxis:{ font: { color: '#ccc' } },
+                grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
+                tooltip: true,
+                tooltipOpts: { content: '%x.1 is %y.4',  defaultTheme: false, shifts: { x: 0, y: 20 } }
+              }
+            " style="height:240px" >
+            </div>
+
+        </div>
+        <div class="col-md-4">
+           <div ui-jq="plot" ui-options="
+              [
+                { data: [[0,0],[1,2500],[2,5000],[3,2500],[4,800],[5,800],[6,800],[7,800],[8,800]], points: { show: true, radius: 6}, splines: { show: true, tension: 0.45, lineWidth: 5, fill: 0 } }
+              ],
+              {
+                colors: ['{{app.color.info}}'],
+                series: { shadowSize: 3 },
+                xaxis:{
+                  font: { color: '#ccc' },
+                  position: 'bottom',
+                  ticks: [
+                    [ 1, '1 Mês' ], [ 2, '2 Mês' ], [ 3, '3 Mês' ], [ 4, '4 Mês' ], [ 5, '5 Mês' ], [ 6, '6 Mês' ], [ 7, '7 Mês' ], [ 8, '8 Mês' ], [ 9, 'Sep' ], [ 10, 'Oct' ], [ 11, 'Nov' ], [ 12, 'Dec' ]
+                  ]
+                },
+                yaxis:{ font: { color: '#ccc' } },
+                grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
+                tooltip: true,
+                tooltipOpts: { content: '%x.1 is %y.4',  defaultTheme: false, shifts: { x: 0, y: 20 } }
+              }
+            " style="height:240px" >
+            </div>
+            </div>
+            <div class="col-md-4">
+           <div ui-jq="plot" ui-options="
+              [
+                { data: [[0,0],[1,0],[2,1000],[3,3750],[4,5000],[5,5500],[6,6000],[7,6500],[8,7000],[9,7500]], points: { show: true, radius: 6}, splines: { show: true, tension: 0.45, lineWidth: 5, fill: 0 } }
+              ],
+              {
+                colors: ['{{app.color.info}}'],
+                series: { shadowSize: 3 },
+                xaxis:{
+                  font: { color: '#ccc' },
+                  position: 'bottom',
+                  ticks: [
+                    [ 1, '1 Mês' ], [ 2, '2 Mês' ], [ 3, '3 Mês' ], [ 4, '4 Mês' ], [ 5, '5 Mês' ], [ 6, '6 Mês' ], [ 7, '7 Mês' ], [ 8, '8 Mês' ], [ 9, 'Sep' ], [ 10, 'Oct' ], [ 11, 'Nov' ], [ 12, 'Dec' ]
+                  ]
+                },
+                yaxis:{ font: { color: '#ccc' } },
+                grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
+                tooltip: true,
+                tooltipOpts: { content: '%x.1 is %y.4',  defaultTheme: false, shifts: { x: 0, y: 20 } }
+              }
+            " style="height:240px" >
+            </div>
+            </div>
+        </div>
+        
+    </div>
+     <div class="wrapper-md bg-white-only b-b">
+      <div class="row text-center">
+
+      <div class="col-sm-3 col-xs-6">
+          <div>Clientes</div>
+          <div class="h2 m-b-sm">30</div>
+
+        </div>
+       
+         <div class="col-sm-3 col-xs-6">
+          <div>Instalações</div>
+          <div class="h2 m-b-sm">R$ 15.000,00</div>
+        </div>
+         <div class="col-sm-3 col-xs-6">
+          <div>Rendimento Mensal</div>
+          <div class="h2 m-b-sm">R$ 7.500,00</div>
+        </div>
+      <div class="col-sm-3 col-xs-6">
+          <div>Acumulado nos 8 Meses</div>
+          <div class="h2 m-b-sm">R$ 50.750,00</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <div class="col">
+    <div class="wrapper">
+      <ul class="timeline">
+        <li class="tl-header">
+          <div class="btn btn-info">Hoje Reunião</div>
+        </li>
+        <li class="tl-item">
+          <div class="tl-wrap b-info">
+            <span class="tl-date">29/09</span>
+            <div class="tl-content">
+              Modelo de Extração
+            </div>
+          </div>
+        </li>
+         <li class="tl-item">
+          <div class="tl-wrap ">
+            <span class="tl-date">30/09</span>
+            <div class="tl-content panel padder b-a w-md w-auto-xs">
+              <span class="arrow left pull-up"></span>
+              <div class="text-lt m-b-sm">Programação dos Extratores - 7dias</div>
+              <div class="panel-body pull-in b-t b-light">
+               
+                <div class="clear">
+                <ul>
+                   <li>Vendas</li>
+                   <li>Compras</li>
+                   <li>Fornecedores</li>
+                   <li>Produtos</li>
+                   <li>Clientes</li>
+                   </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+         <li class="tl-item">
+          <div class="tl-wrap ">
+            <span class="tl-date">05/10</span>
+            <div class="tl-content panel padder b-a w-md w-auto-xs">
+              <span class="arrow left pull-up"></span>
+              <div class="text-lt m-b-sm">Homologação no Cliente - 15 dias</div>
+              <div class="panel-body pull-in b-t b-light">
+               <h4>Funcionalidades</h4>
+                <div class="clear">
+                <ul>
+                   <li>Top 10 Clientes</li>
+                   <li>Top 10 Vendedores</li>
+                   <li>Top 10 Fornecedores</li>
+                   <li>Top 10 Produtos</li>
+                   <li>Histórico de Vendas</li>
+                   <li>Histórico de Compras</li>
+                   <li>Perfil do Produto</li>
+                   <li>Perfil do Fornecedor</li>
+                   <li>Perfil do Cliente</li>
+                   <li>Relatório Diário</li>
+                   <li>Relatório Quinzenal</li>
+                   <li>Relatório Mensal</li>
+                   </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <div class="tl-wrap b-primary">
+            <span class="tl-date">19/10</span>
+            <div class="tl-content panel bg-primary padder">
+              <span class="arrow arrow-primary left pull-up hidden-left"></span>
+              <span class="arrow arrow-primary right pull-up visible-left"></span>
+              <div class="text-lt">Lançamento do Produto</div>
+            </div>
+          </div>
+         <li class="tl-item">
+          <div class="tl-wrap">
+            <span class="tl-date">19/10</span>
+            <div class="tl-content panel padder b-a w-md w-auto-xs">
+              <span class="arrow left pull-up"></span>
+              <div class="text-lt m-b-sm">Primeiro Mês</div>
+              <div class="panel-body pull-in b-t b-light">
+               <h4>Instalações + Treinamento</h4>
+                <div class="clear">
+                <ul>
+                   <li>Tempo médio: 8 horas</li>
+                   <li>Valor por Hora: R$ 62,50</li>
+                   <li>Realizar 5 Instalações em 1 Mês</li>
+                </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="tl-item">
+          <div class="tl-wrap ">
+            <span class="tl-date">19/11</span>
+            <div class="tl-content panel padder b-a w-md w-auto-xs">
+              <span class="arrow left pull-up"></span>
+              <div class="text-lt m-b-sm">2 Meses após o lançamento</div>
+              <div class="panel-body pull-in b-t b-light">
+               <h4>Instalações + Treinamento</h4>
+                <div class="clear">
+                <ul>
+                   <li>Realizar 10 Instalações</li>
+                </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="tl-item">
+          <div class="tl-wrap ">
+            <span class="tl-date">19/12</span>
+            <div class="tl-content panel padder b-a w-md w-auto-xs">
+              <span class="arrow left pull-up"></span>
+              <div class="text-lt m-b-sm">3 Meses após o lançamento</div>
+              <div class="panel-body pull-in b-t b-light">
+               <h4>Instalações + Treinamento</h4>
+                <div class="clear">
+                <ul>
+                   <li>Realizar 5 Instalações</li>
+                </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="tl-header">
+          <div class="btn btn-sm btn-primary btn-rounded">2016</div>
+        </li>
+        <li class="tl-item">
+          <div class="tl-wrap ">
+            <span class="tl-date">19/01</span>
+            <div class="tl-content panel padder b-a w-md w-auto-xs">
+              <span class="arrow left pull-up"></span>
+              <div class="text-lt m-b-sm">2 Meses após o lançamento</div>
+              <div class="panel-body pull-in b-t b-light">
+               <h4>Instalações + Treinamento</h4>
+                <div class="clear">
+                <ul>
+                   <li>Realizar 2 Instalações</li>
+                </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+   
+</div>

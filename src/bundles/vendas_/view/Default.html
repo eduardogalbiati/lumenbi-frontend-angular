@@ -1,0 +1,233 @@
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3"><i class="glyphicon glyphicon-tasks icon"></i> Dashboard</h1>
+</div>
+<div class="wrapper-md"  ng-controller="VendasController">
+  <div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading font-bold">Vendas Anual</div>
+
+          <div class="panel-body">
+            <div ui-refresh="vendasAnualDados" ui-jq="plot" id="teste" ui-options="
+              [
+                { 'data': {{data}}, label: '{{data}}', points: { show: true }, lines: { show: true, fill: true, fillColor: { colors: [{ opacity: 0.1 }, { opacity: 0.1}] } } }
+              ],
+              {
+                'colors': [ '{{app.color.info}}','{{app.color.warning}}','{{app.color.danger}}' ],
+                'series': { shadowSize: 2 },
+                'xaxis':{ font: { color: '#ccc' } },
+                'yaxis':{ font: { color: '#ccc' } },
+                'grid': { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
+                'tooltip': true,
+                'tooltipOpts': { content: '%s of %x.1 is %y.4',  defaultTheme: false, shifts: { x: 0, y: 20 } },
+                'xaxis':{
+                  'font': { color: '#333' },
+                  'position': 'bottom',
+
+                },
+                yaxis:{ font: { color: '#333' } },
+              }
+            " style="height:240px"></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading font-bold">Vendas Mensais (Comparativo 2014)</div>
+
+            <div class="panel-body">
+              <!-- <div ui-refresh="vendasMensalDados" ui-jq="plot" id="teste" ui-options="
+                [
+                  { 'data': {{vendasMensalDados}}, label: '{{vendasMensalLegenda}}', points: { show: true }, lines: { show: true, fill: true, fillColor: { colors: [{ opacity: 0.1 }, { opacity: 0.1}] } } },
+                  { 'data': {{vendasMensalComparativoDados != '' ? vendasMensalComparativoDados : '[]'}}, label: '{{vendasMensalComparativoLegenda}}', points: { show: true }, lines: { show: true, fill: true, fillColor: { colors: [{ opacity: 0.1 }, { opacity: 0.1}] } } }
+
+                ],
+                {
+                  'colors': [ '{{app.color.info}}','{{app.color.warning}}','{{app.color.danger}}' ],
+                  'series': { shadowSize: 2 },
+                  'xaxis':{ font: { color: '#ccc' } },
+                  'yaxis':{ font: { color: '#ccc' } },
+                  'grid': { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
+                  'tooltip': true,
+                  'tooltipOpts': { content: '%s of %x.1 is %y.4',  defaultTheme: false, shifts: { x: 0, y: 20 } },
+                  'xaxis':{
+                    'font': { color: '#333' },
+                    'position': 'bottom',
+                    'ticks': [
+                      [ 1, 'Jan' ], [ 2, 'Fev' ], [ 3, 'Mar' ], [ 4, 'Abr' ], [ 5, 'Mai' ], [ 6, 'Jun' ], [ 7, 'Jul' ], [ 8, 'Ago' ], [ 9, 'Set' ], [ 10, 'Out' ], [ 11, 'Nov' ], [ 12, 'Dez' ]
+                    ]
+                  },
+                  yaxis:{ font: { color: '#333' } },
+                }
+              " style="height:240px"></div>
+            </div> -->
+          </div>
+
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+              <div class="panel-heading font-bold">Vendas Diárias ( Comparativo Mês Passado )
+
+              </div>
+
+              <div class="panel-body">
+                <!-- <div ui-refresh="vendasDiarioDados" ui-jq="plot" id="teste" ui-options="
+                  [
+                    { 'data': {{vendasDiarioDados}}, label: '{{vendasDiarioLegenda}}', points: { show: true }, lines: { show: true, fill: true, fillColor: { colors: [{ opacity: 0.1 }, { opacity: 0.1}] } } },
+                    { 'data': {{vendasDiarioComparativoDados != '' ? vendasDiarioComparativoDados : '[]'}}, label: '{{vendasDiarioComparativoLegenda}}', points: { show: true }, lines: { show: true, fill: true, fillColor: { colors: [{ opacity: 0.1 }, { opacity: 0.1}] } } }
+
+                  ],
+                  {
+                    'colors': [ '{{app.color.info}}','{{app.color.warning}}','{{app.color.danger}}' ],
+                    'series': { shadowSize: 2 },
+                    'xaxis':{ font: { color: '#ccc' } },
+                    'yaxis':{ font: { color: '#ccc' } },
+                    'grid': { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
+                    'tooltip': true,
+                    'tooltipOpts': { content: '%s of %x.1 is %y.4',  defaultTheme: false, shifts: { x: 0, y: 20 } },
+                    'xaxis':{
+                      'font': { color: '#333' },
+                      'position': 'bottom',
+
+                    },
+                    yaxis:{ font: { color: '#333' } },
+                  }
+                " style="height:240px"></div>
+              </div> -->
+            </div>
+
+          </div>
+
+
+  <!-- -->
+</div>
+<div class="row">
+    </div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+
+          <div class="panel-heading font-bold">
+              Top 10 dos Clientes &nbsp;
+              <div class="btn-group dropdown" dropdown="">
+            <button type="button" class="btn btn-default btn-xs" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+              {{vendasClientesView}}
+              &nbsp;<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a ng-click="setClientesView('No mês passado')" href="">No mês passado</a></li>
+              <li><a ng-click="setClientesView('No mês atual')" href="">No mês atual</a></li>
+              <li><a ng-click="setClientesView('Neste ano')" href="">Neste ano</a></li>
+              <li><a ng-click="setClientesView('No ano passado')" href="">No ano passado</a></li>
+              <li><a ng-click="setClientesView('Desde sempre')" href="">Desde sempre</a></li>
+            </ul>
+          </div>
+          </div>
+          <div class="panel-body">
+            <div ui-jq="plot" ui-refresh="vendasClientesTotalChart" ui-options="
+              {{vendasClientesTotalChart}},
+              {
+                series: { pie: { show: true,  innerRadius: 0.5, stroke: { width: 0 }, label: { show: false, threshold: 0.05 } } },
+                colors: ['{{app.color.primary}}','{{app.color.info}}','{{app.color.success}}','{{app.color.warning}}','{{app.color.danger}}'],
+                grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
+                tooltip: true,
+                tooltipOpts: { content: '%s: %p.0%' }
+              }
+            " style="height:240px"></div>
+          </div>
+          <ul class="list-group no-radius">
+            <li ng-repeat="item in vendasClientesTotal track by $index" class="list-group-item">
+              <span class="pull-right">{{item.prc}}%</span>
+              <span class="label bg-primary" style="background-color:{{colors[$index]}}!important">{{item.pos}}</span>
+              {{item.nome}}
+            </li>
+
+          </ul>
+        </div>
+
+
+      </div>
+      <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading font-bold">
+                Top 10 dos vendedores&nbsp;
+                    <div class="btn-group dropdown" dropdown="">
+                      <button type="button" class="btn btn-default btn-xs" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+                        {{vendasVendedoresView}}
+                        &nbsp;<span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a ng-click="setVendedoresView('No mês passado')" href="">No mês passado</a></li>
+                        <li><a ng-click="setVendedoresView('No mês atual')" href="">No mês atual</a></li>
+                        <li><a ng-click="setVendedoresView('Neste ano')" href="">Neste ano</a></li>
+                        <li><a ng-click="setVendedoresView('No ano passado')" href="">No ano passado</a></li>
+                        <li><a ng-click="setVendedoresView('Desde sempre')" href="">Desde sempre</a></li>
+                      </ul>
+                    </div>
+
+
+
+            </div>
+            <div class="panel-body">
+              <div ui-jq="plot" ui-refresh="vendasVendedoresTotalChart" ui-options="
+                {{vendasVendedoresTotalChart}},
+                {
+                  series: { pie: { show: true,  innerRadius: 0.5, stroke: { width: 0 }, label: { show: false, threshold: 0.05 } } },
+                  colors: ['{{app.color.primary}}','{{app.color.info}}','{{app.color.success}}','{{app.color.warning}}','{{app.color.danger}}'],
+                  grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
+                  tooltip: true,
+                  tooltipOpts: { content: '%s: %p.0%' }
+                }
+              " style="height:240px"></div>
+            </div>
+            <ul class="list-group no-radius">
+              <li ng-repeat="item in vendasVendedoresTotal track by $index" class="list-group-item">
+                <span class="pull-right">{{item.prc}}%</span>
+                <span class="label bg-primary" style="background-color:{{colors[$index]}}!important">{{item.pos}}</span>
+                {{item.nome}}
+              </li>
+
+            </ul>
+          </div>
+
+
+        </div>
+
+</div>
+<!--
+
+
+<div class="row">
+    <div class="col-md-8">
+
+            <div class="panel panel-default">
+              <div class="panel-heading font-bold">
+
+                  <div class="btn-group dropdown" dropdown="">
+                    <button type="button" class="btn btn-default btn-xs" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+                      {{vendasView}}
+                      &nbsp;<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a ng-click="setVendasView('Anual')" href="">Anual</a></li>
+                      <li><a ng-click="setVendasView('Mensal')" href="">Mensal</a></li>
+                      <li><a ng-click="setVendasView('Diário')" href="">Diário</a></li>
+                    </ul>
+                  </div>
+                  &nbsp;Vendedores Top 10
+              </div>
+
+              <div class="panel-body">
+                <div ui-refresh="vendasData" ui-jq="plot" id="teste" ui-options="
+                  {{vendasData}},{{vendasOptions}}
+
+                " style="height:240px"></div>
+              </div>
+            </div>
+
+
+    </div>
+</div>
+-->
+</div>

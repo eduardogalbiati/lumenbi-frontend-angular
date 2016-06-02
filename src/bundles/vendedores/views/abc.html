@@ -1,0 +1,374 @@
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3"><i class="fa  fa-users"></i> Classificação ABC de Vendedores
+    <div class="pull-right">
+      <div class="btn-group dropdown " dropdown="">
+            <button type="button" class="btn btn-default btn-xs" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+            &nbsp;<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu  pull-left">
+              <li ng-repeat="mes in abcParametros.meses track by $index">
+                <a ng-click="abcParametros.mes = {{($index+1)}};abcParametros.mesDesc = '{{mes}}';" href="">{{mes}}</a>
+              </li>
+            </ul>
+          </div>
+        {{abcParametros.mesDesc}}
+    </div>
+  </div>
+  </h1>
+  <div class="pull-right">
+   
+</div>
+<div class="wrapper-md" >
+    <div class="row">
+      <div class="col-md-9">
+        <div class="panel panel-default">
+
+          <div class="panel-heading font-bold">
+            Ano {{abcParametros.ano}} Mês a Mês (R$ X Classe)
+            <div class="pull-right">
+              <label class="i-switch m-t-xs m-r panel-switch" style="background-color:{{app.color.info}};">
+                <input type="checkbox" checked="" ng-model="iswitch.total">
+                <i></i>
+              </label>
+            </div>
+          </div>
+          <input type="text" style="display:none;" ng-model="abcParametros.mes" id="abcParametrosMes">
+          <div class="panel-body" style="">      
+            <div ui-jq="plot" id="kkk" abc-month-bind="kkk" ui-refresh="curvaAbcHead" ui-options="
+            [
+
+                    { data: 
+                      {{curvaAbcHead.resumo.A.valorTotal}}, 
+                      label: 'Classe A',
+                      points: { show: true, radius: 6},
+                      splines: { show: true, tension: 0.45, lineWidth: 3, fill: 0 }
+
+                    },
+                    { data: {{curvaAbcHead.resumo.B.valorTotal}}, label: 'Classe B' , points: { show: true, radius: 6}, splines: { show: true, tension: 0.45, lineWidth: 3, fill: 0 } },
+                    { data: {{curvaAbcHead.resumo.C.valorTotal}}, label: 'Classe C' , points: { show: true, radius: 6}, splines: { show: true, tension: 0.45, lineWidth: 3, fill: 0 } }
+                    {{curvaAbcHeadFilter.exibeVirgula}}{{curvaAbcHeadFilter.exibeTotal}}
+
+                     
+                  ],
+                  {
+                    'colors': [ '{{app.abc.A}}','{{app.abc.B}}','{{app.abc.C}}','{{app.color.info}}' ],
+                    series: { shadowSize: 3 },
+                    xaxis:{
+                      tickFilter : 'abcMonthFilter',
+                      font: { color: '#ccc' },
+                      position: 'bottom',
+                      ticks: [
+                        [ 1, '{{getLabel('1')}}' ], [ 2, '{{getLabel('2')}}' ], [ 3, '{{getLabel('3')}}' ], [ 4, '{{getLabel('4')}}' ], [ 5, '{{getLabel('5')}}' ], [ 6, '{{getLabel('6')}}' ], [ 7, '{{getLabel('7')}}' ], [ 8, '{{getLabel('8')}}' ], [ 9, '{{getLabel('9')}}' ], [ 10, '{{getLabel('10')}}' ], [ 11, '{{getLabel('11')}}' ], [ 12, '{{getLabel('12')}}' ]
+                      ]
+                    },
+                    yaxis:{ 
+                      font: { color: '#ccc' },  
+                      tickFilter : 'moedaReal'
+                    },
+                    grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc',
+                    markings: [ { xaxis: { from: {{abcParametros.mes}}, to: {{abcParametros.mes}} }, color: '{{app.color.danger}}' }] },
+                    tooltip: true,
+                    tooltipOpts: { content: '<b>%x</b> &nbsp;&nbsp; %y',  defaultTheme: false, shifts: { x: 0, y: 20 } },
+                    
+                  }
+            
+          " style="min-height:360px" >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3" >
+        <div class="panel panel-default">
+        <div class="panel-heading font-bold">Resumo de {{abcParametros.ano}}</div>
+        <div class="panel-body">
+          <div class="text-center">
+            <div ui-jq="sparkline" ui-refresh="curvaAbcHead" ui-options="
+            {{curvaAbcHead.resumo.pizza.chart}}, 
+            {
+              tooltipPrefix:'R$ ',
+              numberDigitGroupSep: '.',
+              numberDecimalMark: ',',
+              type:'pie',
+              height:154,
+              sliceColors:[
+                '{{app.abc.A}}',
+                '{{app.abc.B}}',
+                '{{app.abc.C}}'
+              ]
+            }" class="sparkline inline"></div>
+            <div class="line pull-in"></div>
+          </div>
+         
+        </div>
+         <div class="list-group no-radius alt">
+            <div class="text-xs">
+              <span class="list-group-item">
+                <div class="row">
+                  <div class="col-md-4">
+                    <i class="fa fa-circle text-info" style="color:{{app.abc.A}};"></i><span class="font-bold"> A </span>
+                  </div>
+                  <div class="col-md-2">
+                    <span class="pull-right">{{curvaAbcHead.resumo.pizza.info[0]}}%</span>
+                  </div>
+                  <div class="col-md-6">
+                    <span class="pull-right">R$ {{curvaAbcHead.resumo.pizza.chart[0] | moedaRealSemDecimal}}</span>
+                  </div>
+                </div>
+              </span>
+
+              <span class="list-group-item">
+                <div class="row">
+                  <div class="col-md-4">
+                    <i class="fa fa-circle text-info" style="color:{{app.abc.B}};"></i><span class="font-bold"> B </span>
+                  </div>
+                  <div class="col-md-2">
+                    <span class="pull-right">{{curvaAbcHead.resumo.pizza.info[1]}}%</span>
+                  </div>
+                  <div class="col-md-6">
+                    <span class="pull-right">R$ {{curvaAbcHead.resumo.pizza.chart[1] | moedaRealSemDecimal}}</span>
+                  </div>
+                </div>
+              </span>
+              <span class="list-group-item">
+                <div class="row">
+                  <div class="col-md-4">
+                    <i class="fa fa-circle text-info" style="color:{{app.abc.C}};"></i><span class="font-bold"> C </span>
+                  </div>
+                  <div class="col-md-2">
+                    <span class="pull-right">{{curvaAbcHead.resumo.pizza.info[2]}}%</span>
+                  </div>
+                  <div class="col-md-6">
+                    <span class="pull-right">R$ {{curvaAbcHead.resumo.pizza.chart[2] | moedaRealSemDecimal}}</span>
+                  </div>
+                </div>
+              </span>
+
+              <span class="list-group-item">
+                <div class="row">
+                  <div class="col-md-4">
+                    <span class="font-bold"> Total </span>
+                  </div>
+                  <div class="col-md-8">
+                    <span class="pull-right">R$ {{curvaAbcHead.resumo.pizza.chart[0] + curvaAbcHead.resumo.pizza.chart[1] + curvaAbcHead.resumo.pizza.chart[2] | moedaRealSemDecimal}}</span>
+                  </div>
+                </div>
+              </span>
+              <!-- 
+              <i class="fa fa-circle text-info" style="color:{{app.abc.B}};"></i> 
+              {{curvaAbcHead.resumo.pizza.info[1]}}%
+              <i class="fa fa-circle text-info" style="color:{{app.abc.C}};"></i> 
+              {{curvaAbcHead.resumo.pizza.info[2]}}% -->
+            </div>
+          </div>
+      </div>
+      </div>
+    </div>
+
+  <div class="row" id="tableCurvaAbc">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading panel-heading font-bold">
+          Vendedores no mês de {{abcParametros.mesDesc}}
+          <div class="pull-right">
+           Intervalo ABC&nbsp;
+          <div class="btn-group dropdown" dropdown="">
+              <button type="button" class="btn btn-default btn-xs" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+             {{abcParametros.intervalDesc}}
+              &nbsp;<span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li ng-repeat="intervalo in abcParametros.intervalos track by $index">
+                  <a ng-click="abcParametros.interval = {{intervalo.val}};abcParametros.intervalDesc = '{{intervalo.desc}}';" href="">{{intervalo.desc}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="panel panel-default">
+                <div class="panel-heading font-bold">
+                  Classe A
+                  <div class="pull-right">
+                      <label class="i-switch m-t-xs m-r panel-switch" style="background-color:{{app.abc.A}};">
+                      <input type="checkbox" checked="" ng-model="iswitch.a">
+                      <i></i>
+                    </label>
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      <small class="text-muted block">Valores</small>
+                      <span class="text-md">R$ {{abcData.header.A.valorTotal | moedaRealSemDecimal}}</span>
+                    </div>
+                    <div class="col-xs-3">
+                      <small class="text-muted block">Vendedores</small>
+                      <span class="text-md" >{{abcData.header.A.qtdItensDistintos}}</span>
+                    </div>
+                    <div class="col-xs-3">
+                      <small class="text-muted block">Vendas</small>
+                      <span class="text-md">{{abcData.header.A.qtdItens}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="panel panel-default">
+                <div class="panel-heading font-bold">
+                  Classe B
+                  <div class="pull-right">
+                      <label class="i-switch m-t-xs m-r panel-switch" style="background-color:{{app.abc.B}};">
+                      <input type="checkbox" checked="" ng-model="iswitch.b" >
+                      <i></i>
+                    </label>
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      <small class="text-muted block">Valores</small>
+                      <span class="text-md">R$ {{abcData.header.B.valorTotal | moedaRealSemDecimal}}</span>
+                    </div>
+                    <div class="col-xs-3">
+                      <small class="text-muted block">Vendedores</small>
+                      <span class="text-md" >{{abcData.header.B.qtdItensDistintos}}</span>
+                    </div>
+                    <div class="col-xs-3">
+                      <small class="text-muted block">Vendas</small>
+                      <span class="text-md">{{abcData.header.B.qtdItens}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="panel panel-default">
+                <div class="panel-heading font-bold">
+                  Classe C
+                  <div class="pull-right">
+                      <label class="i-switch m-t-xs m-r panel-switch" style="background-color:{{app.abc.C}};">
+                      <input type="checkbox" checked="" ng-model="iswitch.c" >
+                      <i></i>
+                    </label>
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      <small class="text-muted block">Valores</small>
+                      <span class="text-md">R$ {{abcData.header.C.valorTotal | moedaRealSemDecimal}}</span>
+                    </div>
+                    <div class="col-xs-3">
+                      <small class="text-muted block">Vendedores</small>
+                      <span class="text-md" >{{abcData.header.C.qtdItensDistintos}}</span>
+                    </div>
+                    <div class="col-xs-3">
+                      <small class="text-muted block">Vendas</small>
+                      <span class="text-md">{{abcData.header.C.qtdItens}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                  <input type="text" class="form-control" placeholder="Buscar Vendedore" ng-model="search.item">
+                </div>
+              </div>
+            
+          </form>
+          <div class="table-responsive">
+            <table  class="table table-striped b-t b-b">
+              <thead>
+                <tr>
+                  <th  style="width:3%">
+                  </th>
+                  <th  style="width:8%;text-allign:right;">
+                    <a ng-click="abcFilters.sortType = 'pos'; abc.Filters.sortReverse = !abc.Filters.sortReverse">Pos.</a>
+                    <span ng-show="abcFilters.sortType == 'pos' && !abc.Filters.sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="abcFilters.sortType == 'pos' && abc.Filters.sortReverse" class="fa fa-caret-up"></span>
+                  </th>
+                  <th  style="width:35%">
+                    <a ng-click="abcFilters.sortType = 'item'; abc.Filters.sortReverse = !abc.Filters.sortReverse">Vendedore</a>
+                    <span ng-show="abcFilters.sortType == 'item' && !abc.Filters.sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="abcFilters.sortType == 'item' && abc.Filters.sortReverse" class="fa fa-caret-up"></span>
+                  </th>
+                  <th  style="width:8%">
+                    <a ng-click="abcFilters.sortType = 'qtd'; abc.Filters.sortReverse = !abc.Filters.sortReverse">Vendas</a>
+                    <span ng-show="abcFilters.sortType == 'qtd' && !abc.Filters.sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="abcFilters.sortType == 'qtd' && abc.Filters.sortReverse" class="fa fa-caret-up"></span>
+                  </th>
+                  <th  style="width:8%">Repr.</th>
+                  <th  style="width:12%">Valor Total</th>
+                  <th  style="width:8%;text-align:center;">Histórico</th>
+                  <th  style="width:10%;text-align:center;">
+                    <a ng-click="abcFilters.sortType = 'difPos'; abc.Filters.sortReverse = !abc.Filters.sortReverse">Rank</a>
+                    <span ng-show="abcFilters.sortType == 'difPos' && !abc.Filters.sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="abcFilters.sortType == 'difPos' && abc.Filters.sortReverse" class="fa fa-caret-up"></span>
+                  </th>
+                  <th  style="width:15%">Status</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="item in abcData.table | orderBy:abcFilters.sortType:abc.Filters.sortReverse | filter:search 
+                  | filter:{ classe : '!'+abcFilters.blockA.classe }
+                  | filter:{ classe : '!'+abcFilters.blockB.classe } 
+                  | filter:{ classe : '!'+abcFilters.blockC.classe } | itemsPerPage: 10  " pagination-id="curvaAbc">
+                  <td class="large-text">
+                    <div class="circle circle-text" style="background:{{app.abc[item.classe]}}">
+                      <span class="title">
+                      {{item.classe}}
+                      </span>
+                    </div>
+                  </td>
+                  <td class="large-text">
+                    <span >{{item.pos}}º</span>
+                  </td>
+                  <td>
+                    <a 
+                  ui-jq="colorbox" ui-options="{href:'{{app.settings.basePath}}/vendedor/{{item.idVendedor}}', iframe: true, width: '95%',height: '95%'}">{{item.item}}</a>
+                  <span style="display:none;">{{item.idVendedor}}</span></td>
+                  <td>{{item.qtd}}</td>
+                  <td>{{item.prcValor}} %</td>
+                  <td>R$ {{item.valorTotal | moedaRealSemDecimal}}</td>
+                  <td>
+                    <div  ui-jq="sparkline" ui-refresh="item.historico.resumo" ui-options="{{item.historico.resumo}}, {type:'line', height:19, width:60, lineColor:'#7266ba', tooltipPrefix: 'Posição ',tooltipSuffix:'°'}" class="sparkline inline">
+                      <canvas width="60" height="19" style="display: inline-block; width: 60px; height: 19px; vertical-align: top;"></canvas>
+                    </div>
+                  </td>
+                  <td>
+                    <span ng-if="item.difPos < 0" class="text-danger">
+                    <i class="fa fa-caret-down"></i>  {{item.difPos}}
+                    </span>
+                    <span ng-if="item.difPos > 0" class="text-success">
+                    <i class="fa fa-caret-up"></i> {{item.difPos}}
+                    </span>
+                  </td>
+                  <td>
+                  <span ng-if="item.idStatus == 1" class="label bg-success">{{item.status}}</span>
+                  <span ng-if="item.idStatus == 2" class="label bg-warning">{{item.status}}</span>
+                  <span ng-if="item.idStatus == 3" class="label bg-danger">{{item.status}}</span>
+                  <span ng-if="item.idStatus == 4" class="label bg-primary">{{item.status}}</span>
+                  <span ng-if="item.idStatus == 5" class="label bg-info">{{item.status}}</span>
+                  
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="text-align:center;">
+            <dir-pagination-controls  pagination-id="curvaAbc"></dir-pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>   

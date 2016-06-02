@@ -1,0 +1,58 @@
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3"><i class="fa fa-paper-plane"></i> Orçamentos</h1>
+</div>
+<div class="wrapper-md"  ng-controller="OrcamentoController">
+  <div class="row">
+    <div class="col-md-12">
+
+    <div class="panel panel-default">
+      <div class="panel-heading font-bold">Vendas ( Comparativo 2014 )
+         <div class="pull-right">
+             <div class="btn-group">
+              <button type="button" ng-click="vendasAnual().then($())" class="btn btn-default btn-xs">Anual</button>
+              <button type="button" class="btn btn-default btn-xs">Mensal</button>
+              <button type="button" class="btn btn-default btn-xs">Diario</button>
+            </div>
+
+         </div>
+     </div>
+
+      <div class="panel-body">
+        <div ui-jq="plot" id="teste" ui-options="
+          [
+            { 'data': {{vendasDados}}, label: '{{vendasLegenda}}', points: { show: true }, lines: { show: true, fill: true, fillColor: { colors: [{ opacity: 0.1 }, { opacity: 0.1}] } } },
+            { 'data': {{vendasComparativoDados != '' ? vendasComparativoDados : '[]'}}, label: '{{vendasComparativoLegenda}}', points: { show: true }, lines: { show: true, fill: true, fillColor: { colors: [{ opacity: 0.1 }, { opacity: 0.1}] } } }
+
+          ],
+          {
+            'colors': [ '{{app.color.info}}','{{app.color.warning}}','{{app.color.danger}}' ],
+            'series': { shadowSize: 2 },
+            'xaxis':{ font: { color: '#ccc' } },
+            'yaxis':{ font: { color: '#ccc' } },
+            'grid': { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
+            'tooltip': true,
+            'tooltipOpts': { content: '%s of %x.1 is %y.4',  defaultTheme: false, shifts: { x: 0, y: 20 } },
+            'xaxis':{
+              'font': { color: '#333' },
+              'position': 'bottom',
+              'ticks': [
+                [ 1, 'Jan' ], [ 2, 'Fev' ], [ 3, 'Mar' ], [ 4, 'Abr' ], [ 5, 'Mai' ], [ 6, 'Jun' ], [ 7, 'Jul' ], [ 8, 'Ago' ], [ 9, 'Set' ], [ 10, 'Out' ], [ 11, 'Nov' ], [ 12, 'Dez' ]
+              ]
+            },
+            yaxis:{ font: { color: '#333' } },
+          }
+        " style="height:240px"></div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- -->
+</div>
+<div class="row">
+  <div class="col-md-8">
+
+  </div>
+</div>
+</div>

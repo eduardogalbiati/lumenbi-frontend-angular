@@ -1,0 +1,27 @@
+<h1 class="md-title logo">Lumen BI</h1>
+<md-list>
+      <md-item ng-repeat="item in menu">
+        <a>
+          <md-item-content md-ink-ripple layout="row" layout-align="start center">
+            <div class="inset">
+              <ng-md-icon icon="{{item.icon}}" style="fill:#869fb1; width: 21px;" ></ng-md-icon>
+            </div>
+            <div class="inset">{{item.title}}
+            </div>
+          </md-item-content>
+        </a>
+      </md-item>
+      <md-divider></md-divider>
+      <md-subheader>Management</md-subheader>
+      <md-item ng-repeat="item in admin">
+        <a ui-sref="{{item.sref}}">
+          <md-item-content md-ink-ripple="#bbb" layout="row" layout-align="start center">
+            <div class="inset">
+              <ng-md-icon icon="{{item.icon}}"  style="fill:#869fb1; width: 21px; " ></ng-md-icon>
+            </div>
+            <div class="inset">{{item.title}}
+            </div>
+          </md-item-content>
+        </a>
+      </md-item>
+    </md-list>

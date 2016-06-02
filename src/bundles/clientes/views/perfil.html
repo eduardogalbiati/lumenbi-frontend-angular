@@ -1,0 +1,388 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+    app.settings.headerFixed = false; 
+  ">
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3"><i class="fa  fa-cube"></i> {{info.cliente.nomeCliente}}
+   <div class="pull-right">
+           Intervalo ABC&nbsp;
+          <div class="btn-group dropdown" dropdown="">
+              <button type="button" class="btn btn-default btn-xs" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+             {{filters.intervalDesc}}
+              &nbsp;<span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li ng-repeat="intervalo in filters.intervalos track by $index">
+                  <a ng-click="filters.interval = {{intervalo.val}};filters.intervalDesc = '{{intervalo.desc}}';" href="">{{intervalo.desc}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+    <div class="pull-right">
+      <div class="btn-group dropdown " dropdown="">
+            <button type="button" class="btn btn-default btn-xs" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+            &nbsp;<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu  pull-left">
+              <li ng-repeat="mes in filters.meses track by $index">
+                <a ng-click="filters.mes = {{($index+1)}};filters.mesDesc = '{{mes}}';" href="">{{mes}}</a>
+              </li>
+            </ul>
+          </div>
+        {{filters.mesDesc}}
+    </div>
+  </div>
+
+
+
+<div class="wrapper-md" ng-controller="ClientesPerfilController">
+    <div class="row">
+      <div class="col-md-9">
+        <div class="panel panel-default">
+
+          <div class="panel-heading font-bold">
+            Vendas
+            <div class="pull-right">
+              <label class="i-switch m-t-xs m-r panel-switch" style="background-color:{{app.color.info}};">
+                <input type="checkbox" checked="" ng-click="toggleTotal()">
+                <i></i>
+              </label>
+            </div>
+          </div>
+          <input type="text" style="display:none;" ng-model="filters.mes" id="filtersMes">
+          <div class="panel-body" style="">            
+            <div ui-jq="plot" id="kkk" abc-month-bind="kkk" ui-refresh="vendasMensal" ui-options="
+            [
+
+                    
+                     { data: 
+                      {{vendasMensalComp}}, 
+                      label: 'Vendas no ano de {{filters.anoComp}}',
+                      points: { show: true, radius: 6},
+                      splines: { show: true, tension: 0.45, lineWidth: 3, fill: 0 }
+
+                    },
+                     { data: 
+                      {{vendasMensal}}, 
+                      label: 'Vendas no ano de {{filters.ano}}',
+                      points: { show: true, radius: 6},
+                      splines: { show: true, tension: 0.45, lineWidth: 3, fill: 0 }
+
+                    }
+                  ],
+                  {
+                    'colors': [ '{{app.color.light}}', '{{app.color.info}}' ],
+                    series: { shadowSize: 3 },
+                    xaxis:{
+                      font: { color: '#ccc' },
+                      position: 'bottom',
+                      ticks: [
+                        [ 1, 'Jan' ], [ 2, 'Fev' ], [ 3, 'Mar' ], [ 4, 'Apr' ], [ 5, 'Mai' ], [ 6, 'Jun' ], [ 7, 'Jul' ], [ 8, 'Ago' ], [ 9, 'Set' ], [ 10, 'Out' ], [ 11, 'Nov' ], [ 12, 'Dez' ]
+                      ]
+                    },
+                    yaxis:{ 
+                      font: { color: '#ccc' },  
+                      tickFormatter : 'moedaReal'
+ },
+                    grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
+                    tooltip: true,
+                    tooltipOpts: { content: 'Mes (%x) valor de R$ %y,00',  defaultTheme: false, shifts: { x: 0, y: 20 } },
+                    
+                  }
+            
+          " style="min-height:360px" >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3" >
+       <div class="row"> 
+        <div class="panel panel-default">
+        <div class="panel-heading font-bold">Resumo</div>
+        <div class="panel-body">
+      
+
+
+        </div>
+      <div class="list-group no-radius alt">
+            <div class="text-xs">
+             <span class="list-group-item">
+                <div class="row">
+                  <div class="col-md-8">
+                   <span class="font-bold">Posição </span>
+                  </div>
+                  <div class="col-md-4">
+                    <span class="pull-right  large-text">{{info.cliente.posicao}}º</span>
+                  </div>
+                </div>
+              </span>
+            <span class="list-group-item">
+                <div class="row">
+                  <div class="col-md-8">
+                   <span class="font-bold">Classe </span>
+                  </div>
+                  <div class="col-md-4">
+                    <span class="pull-right"><div class="circle circle-text" style="background:{{app.abc[info.cliente.classe]}}">
+                      <span class="title">
+                       {{info.cliente.classe}}
+                      </span>
+                    </div></span>
+                  </div>
+                </div>
+              </span>
+              <span class="list-group-item">
+                <div class="row">
+                  <div class="col-md-8">
+                   <span class="font-bold">Total de Vendas </span>
+                  </div>
+                  <div class="col-md-4">
+                    <span class="pull-right">{{info.cliente.qtdVendida}}</span>
+                  </div>
+                </div>
+              </span>
+
+               <span class="list-group-item">
+                <div class="row">
+                  <div class="col-md-8">
+                   <span class="font-bold">Total de Clientes </span>
+                  </div>
+                  <div class="col-md-4">
+                    <span class="pull-right">{{info.cliente.clientesDistintos}}</span>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+      </div>
+      </div>
+
+          <div class="row">
+   
+            <div class="panel panel-default">
+              <div class="panel-heading font-bold">Margem Bruta (Média)
+
+              </div>
+
+              <div class="panel-body">
+              <div ui-refresh="historicoMargem.comp" ui-jq="plot" id="teste" ui-options="
+              [
+                { 'data': {{historicoMargem.comp}}, label: '{{filters.anoComp}}', points: { show: true }, lines: { show: true, fill: true, fillColor: { colors: [{ opacity: 0.1 }, { opacity: 0.1}] } } },
+                { 'data': {{historicoMargem.atual}}, label: '{{filters.ano}}', points: { show: true }, lines: { show: true, fill: true, fillColor: { colors: [{ opacity: 0.1 }, { opacity: 0.1}] } } }
+              ],
+              {
+                'colors': [ '{{app.color.light}}','{{app.color.primary}}'],
+                'series': { shadowSize: 2 },
+                'xaxis':{ font: { color: '#ccc' } },
+                'yaxis':{ font: { color: '#ccc' } },
+                'grid': { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
+                'tooltip': true,
+                'tooltipOpts': { content: '%y.2% em %x/%s',  defaultTheme: false, shifts: { x: 0, y: 20 } },
+                'xaxis':{
+                  'font': { color: '#333' },
+                  'position': 'bottom',
+
+                },
+                yaxis:{ font: { color: '#333' } },
+              }
+            " style="height:240px"></div>
+              </div>
+
+          </div>
+          </div>
+      </div>
+
+    </div>
+
+
+ <tabset class="tab-container">
+   <tab>
+      <tab-heading>
+        Produtos
+      </tab-heading> 
+      <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+              <div class="panel-heading font-bold">Produtos comprados pelo cliente</div>
+              <div class="panel-body">
+                <form>
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                        <input type="text" class="form-control" placeholder="Buscar Produto" ng-model="search.item">
+                      </div>
+                    </div>
+                  
+                </form>
+                <div class="table-responsive">
+                  <table  class="table table-striped b-t b-b">
+                    <thead>
+                      <tr>
+                        <th  style="width:3%">
+                        </th>
+                        <th  style="width:8%;text-allign:right;">
+                          <a ng-click="produtosFilter.sortType = 'posicao'; produtosFilter.sortReverse = !produtosFilter.sortReverse">Pos.</a>
+                          <span ng-show="produtosFilter.sortType == 'posicao' && !produtosFilter.sortReverse" class="fa fa-caret-down"></span>
+                          <span ng-show="produtosFilter.sortType == 'posicao' && produtosFilter.sortReverse" class="fa fa-caret-up"></span>
+                        </th>
+                        <th  style="width:35%">
+                          <a ng-click="produtosFilter.sortType = 'item'; produtosFilter.sortReverse = !produtosFilter.sortReverse">Produto</a>
+                          <span ng-show="produtosFilter.sortType == 'item' && !produtosFilter.sortReverse" class="fa fa-caret-down"></span>
+                          <span ng-show="produtosFilter.sortType == 'item' && produtosFilter.sortReverse" class="fa fa-caret-up"></span>
+                        </th>
+                        <th  style="width:8%">
+                          <a ng-click="produtosFilter.sortType = 'qtd'; produtosFilter.sortReverse = !produtosFilter.sortReverse">Qtd Itens</a>
+                          <span ng-show="produtosFilter.sortType == 'qtd' && !produtosFilter.sortReverse" class="fa fa-caret-down"></span>
+                          <span ng-show="produtosFilter.sortType == 'qtd' && produtosFilter.sortReverse" class="fa fa-caret-up"></span>
+                        </th>
+                        <th  style="width:12%">
+                           <a ng-click="produtosFilter.sortType = 'valorTotal'; produtosFilter.sortReverse = !produtosFilter.sortReverse">Valor Total</a>
+                          <span ng-show="produtosFilter.sortType == 'valorTotal' && !produtosFilter.sortReverse" class="fa fa-caret-down"></span>
+                          <span ng-show="produtosFilter.sortType == 'valorTotal' && produtosFilter.sortReverse" class="fa fa-caret-up"></span>
+                        </th>
+                        <th  style="width:12%">
+                           <a ng-click="produtosFilter.sortType = 'ultimaData'; produtosFilter.sortReverse = !produtosFilter.sortReverse">Última compra</a>
+                          <span ng-show="produtosFilter.sortType == 'ultimaData' && !produtosFilter.sortReverse" class="fa fa-caret-down"></span>
+                          <span ng-show="produtosFilter.sortType == 'ultimaData' && produtosFilter.sortReverse" class="fa fa-caret-up"></span>
+                        </th>
+                                          <th  style="width:15%">Status</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr dir-paginate="item in clienteProdutos | orderBy:produtosFilter.sortType:produtosFilter.sortReverse | filter:search 
+                        | itemsPerPage: 10  " pagination-id="clientes">
+                        <td class="large-text">
+                          <div class="circle circle-text" style="background:{{app.abc[item.classe]}}">
+                            <span class="title">
+                            {{item.classe}}
+                            </span>
+                          </div>
+                        </td>
+                        <td class="large-text">
+                          <span >{{item.posicao}}º</span>
+                        </td>
+                        <td>{{item.nomeProduto}}<span style="display:none;">{{item.idProduto}}</span></td>
+                        <td>{{item.qtdTotal}}</td>
+                        <td>R$ {{item.valorTotal | moedaRealSemDecimal}}</td>
+
+                        <span ng-if="item.idStatus == 1" class="label bg-success">{{item.status}}</span>
+                        <span ng-if="item.idStatus == 2" class="label bg-warning">{{item.status}}</span>
+                        <span ng-if="item.idStatus == 3" class="label bg-danger">{{item.status}}</span>
+                        <span ng-if="item.idStatus == 4" class="label bg-primary">{{item.status}}</span>
+                        <span ng-if="item.idStatus == 5" class="label bg-info">{{item.status}}</span>
+                        
+                        </td>
+                        <td>{{item.ultimaData | asDate | date:"dd/MM/yy"}}</td>
+                         <td>
+                          <span ng-if="item.idStatus == 1" class="label bg-success">{{item.status}}</span>
+                          <span ng-if="item.idStatus == 2" class="label bg-warning">{{item.status}}</span>
+                          <span ng-if="item.idStatus == 3" class="label bg-danger">{{item.status}}</span>
+                          <span ng-if="item.idStatus == 4" class="label bg-primary">{{item.status}}</span>
+                          <span ng-if="item.idStatus == 5" class="label bg-info">{{item.status}}</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div style="text-align:center;">
+                  <dir-pagination-controls  pagination-id="clientes"></dir-pagination-controls>
+                </div>
+              </div>
+            </div>
+
+
+        </div>
+      </div>
+    </tab>
+    
+    <tab>
+      <tab-heading>
+        Vendedores
+      </tab-heading> 
+      <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+              <div class="panel-heading font-bold">Vendedores que venderam o Produto</div>
+              <div class="panel-body">
+                <form>
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                        <input type="text" class="form-control" placeholder="Buscar Cliente" ng-model="search.item">
+                      </div>
+                    </div>
+                  
+                </form>
+                <div class="table-responsive">
+                  <table  class="table table-striped b-t b-b">
+                    <thead>
+                      <tr>
+                        <th  style="width:3%">
+                        </th>
+                        <th  style="width:8%;text-allign:right;">
+                          <a ng-click="vendedoresFilter.sortType = 'posicao'; vendedoresFilter.sortReverse = !vendedoresFilter.sortReverse">Pos.</a>
+                          <span ng-show="vendedoresFilter.sortType == 'posicao' && !vendedoresFilter.sortReverse" class="fa fa-caret-down"></span>
+                          <span ng-show="vendedoresFilter.sortType == 'posicao' && vendedoresFilter.sortReverse" class="fa fa-caret-up"></span>
+                        </th>
+                        <th  style="width:35%">
+                          <a ng-click="vendedoresFilter.sortType = 'item'; vendedoresFilter.sortReverse = !vendedoresFilter.sortReverse">Vendedor</a>
+                          <span ng-show="vendedoresFilter.sortType == 'item' && !vendedoresFilter.sortReverse" class="fa fa-caret-down"></span>
+                          <span ng-show="vendedoresFilter.sortType == 'item' && vendedoresFilter.sortReverse" class="fa fa-caret-up"></span>
+                        </th>
+                        <th  style="width:8%">
+                          <a ng-click="vendedoresFilter.sortType = 'qtd'; vendedoresFilter.sortReverse = !vendedoresFilter.sortReverse">Qtd Itens</a>
+                          <span ng-show="vendedoresFilter.sortType == 'qtd' && !vendedoresFilter.sortReverse" class="fa fa-caret-down"></span>
+                          <span ng-show="vendedoresFilter.sortType == 'qtd' && vendedoresFilter.sortReverse" class="fa fa-caret-up"></span>
+                        </th>
+                        <th  style="width:12%">
+                           <a ng-click="vendedoresFilter.sortType = 'valorTotal'; vendedoresFilter.sortReverse = !vendedoresFilter.sortReverse">Valor Total</a>
+                          <span ng-show="vendedoresFilter.sortType == 'valorTotal' && !vendedoresFilter.sortReverse" class="fa fa-caret-down"></span>
+                          <span ng-show="vendedoresFilter.sortType == 'valorTotal' && vendedoresFilter.sortReverse" class="fa fa-caret-up"></span>
+                        </th>
+                        <th  style="width:12%">
+                           <a ng-click="vendedoresFilter.sortType = 'ultimaData'; vendedoresFilter.sortReverse = !vendedoresFilter.sortReverse">Última compra</a>
+                          <span ng-show="vendedoresFilter.sortType == 'ultimaData' && !vendedoresFilter.sortReverse" class="fa fa-caret-down"></span>
+                          <span ng-show="vendedoresFilter.sortType == 'ultimaData' && vendedoresFilter.sortReverse" class="fa fa-caret-up"></span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr dir-paginate="item in clienteVendedores | orderBy:vendedoresFilter.sortType:vendedoresFilter.sortReverse | filter:search 
+                        | itemsPerPage: 10  " pagination-id="vendedores">
+                        <td class="large-text">
+                          <div class="circle circle-text" style="background:{{app.abc[item.classe]}}">
+                            <span class="title">
+                            {{item.classe}}
+                            </span>
+                          </div>
+                        </td>
+                        <td class="large-text">
+                          <span >{{item.posicao}}º</span>
+                        </td>
+                        <td>{{item.nomeVendedor}}<span style="display:none;">{{item.idVendedor}}</span></td>
+                        <td>{{item.qtdTotal}}</td>
+                        <td>R$ {{item.valorTotal | moedaRealSemDecimal}}</td>
+
+                        <span ng-if="item.idStatus == 1" class="label bg-success">{{item.status}}</span>
+                        <span ng-if="item.idStatus == 2" class="label bg-warning">{{item.status}}</span>
+                        <span ng-if="item.idStatus == 3" class="label bg-danger">{{item.status}}</span>
+                        <span ng-if="item.idStatus == 4" class="label bg-primary">{{item.status}}</span>
+                        <span ng-if="item.idStatus == 5" class="label bg-info">{{item.status}}</span>
+                        
+                        </td>
+                        <td>{{item.ultimaData | asDate | date:"dd/MM/yy"}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div style="text-align:center;">
+                  <dir-pagination-controls  pagination-id="vendedores"></dir-pagination-controls>
+                </div>
+              </div>
+            </div>
+
+
+        </div>
+      </div>
+    </tab>
+  </tabset>
+</div>

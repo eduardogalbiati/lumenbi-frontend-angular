@@ -1,0 +1,226 @@
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3"><i class="fa  fa-cubes"></i> Classificação ABC do Estoque
+    <div class="pull-right">
+      <div class="btn-group dropdown " dropdown="">
+            <button type="button" class="btn btn-default btn-xs" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+            &nbsp;<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu  pull-left">
+              <li ng-repeat="mes in abcParametros.meses track by $index">
+                <a ng-click="abcParametros.mes = {{($index+1)}};abcParametros.mesDesc = '{{mes}}';" href="">{{mes}}</a>
+              </li>
+            </ul>
+          </div>
+        {{abcParametros.mesDesc}}
+    </div>
+  </div>
+  </h1>
+  <div class="pull-right">
+   
+</div>
+<div class="wrapper-md" >
+    
+
+  <div class="row" id="tableCurvaAbc">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading panel-heading font-bold">
+          Produtos no mês de {{abcParametros.mesDesc}}
+          <div class="pull-right">
+           Considerar Quantidades no estoque
+                           <label class="i-switch m-t-xs m-r panel-switch" style="background-color:red;">
+                                 <input type="checkbox" checked="" ng-model="iswitch.abcSemQtd">
+                                                       <i></i>
+
+                                 </label>
+         
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="panel panel-default">
+                <div class="panel-heading font-bold">
+                  Classe A
+                  <div class="pull-right">
+                      <label class="i-switch m-t-xs m-r panel-switch" style="background-color:{{app.abc.A}};">
+                      <input type="checkbox" checked="" ng-model="iswitch.a">
+                      <i></i>
+                    </label>
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      <small class="text-muted block">Valores</small>
+                      <span class="text-md">R$ {{abcData.header.A.valorTotal | moedaRealSemDecimal}}</span>
+                    </div>
+                    <div class="col-xs-3">
+                      <small class="text-muted block">Produtos</small>
+                      <span class="text-md" >{{abcData.header.A.qtdItensDistintos}}</span>
+                    </div>
+                    <div class="col-xs-3">
+                      <small class="text-muted block">Vendas</small>
+                      <span class="text-md">{{abcData.header.A.qtdItens}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="panel panel-default">
+                <div class="panel-heading font-bold">
+                  Classe B
+                  <div class="pull-right">
+                      <label class="i-switch m-t-xs m-r panel-switch" style="background-color:{{app.abc.B}};">
+                      <input type="checkbox" checked="" ng-model="iswitch.b" >
+                      <i></i>
+                    </label>
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      <small class="text-muted block">Valores</small>
+                      <span class="text-md">R$ {{abcData.header.B.valorTotal | moedaRealSemDecimal}}</span>
+                    </div>
+                    <div class="col-xs-3">
+                      <small class="text-muted block">Produtos</small>
+                      <span class="text-md" >{{abcData.header.B.qtdItensDistintos}}</span>
+                    </div>
+                    <div class="col-xs-3">
+                      <small class="text-muted block">Vendas</small>
+                      <span class="text-md">{{abcData.header.B.qtdItens}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="panel panel-default">
+                <div class="panel-heading font-bold">
+                  Classe C
+                  <div class="pull-right">
+                      <label class="i-switch m-t-xs m-r panel-switch" style="background-color:{{app.abc.C}};">
+                      <input type="checkbox" checked="" ng-model="iswitch.c" >
+                      <i></i>
+                    </label>
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      <small class="text-muted block">Valores</small>
+                      <span class="text-md">R$ {{abcData.header.C.valorTotal | moedaRealSemDecimal}}</span>
+                    </div>
+                    <div class="col-xs-3">
+                      <small class="text-muted block">Produtos</small>
+                      <span class="text-md" >{{abcData.header.C.qtdItensDistintos}}</span>
+                    </div>
+                    <div class="col-xs-3">
+                      <small class="text-muted block">Vendas</small>
+                      <span class="text-md">{{abcData.header.C.qtdItens}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                  <input type="text" class="form-control" placeholder="Buscar Produto" ng-model="search.item">
+                </div>
+              </div>
+            
+          </form>
+          <div class="table-responsive">
+            <table  class="table table-striped b-t b-b">
+              <thead>
+                <tr>
+                  <th  style="width:3%">
+                  </th>
+                  <th  style="width:8%;text-allign:right;">
+                    <a ng-click="abcFilters.sortType = 'pos'; abc.Filters.sortReverse = !abc.Filters.sortReverse">Pos.</a>
+                    <span ng-show="abcFilters.sortType == 'pos' && !abc.Filters.sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="abcFilters.sortType == 'pos' && abc.Filters.sortReverse" class="fa fa-caret-up"></span>
+                  </th>
+                  <th  style="width:35%">
+                    <a ng-click="abcFilters.sortType = 'item'; abc.Filters.sortReverse = !abc.Filters.sortReverse">Produto</a>
+                    <span ng-show="abcFilters.sortType == 'item' && !abc.Filters.sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="abcFilters.sortType == 'item' && abc.Filters.sortReverse" class="fa fa-caret-up"></span>
+                  </th>
+                  <th  style="width:8%">Repr.</th>
+                  <th  style="width:8%">
+                    <a ng-click="abcFilters.sortType = 'qtd'; abc.Filters.sortReverse = !abc.Filters.sortReverse">Qtd</a>
+                    <span ng-show="abcFilters.sortType == 'qtd' && !abc.Filters.sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="abcFilters.sortType == 'qtd' && abc.Filters.sortReverse" class="fa fa-caret-up"></span>
+                  </th>
+                  
+                  <th  style="width:12%">Valor Total</th>
+                 <th  style="width:8%">
+                   <a ng-click="abcFilters.sortType = 'item.valorCusto'; abc.Filters.sortReverse = !abc.Filters.sortReverse">Custo Un.</a>
+                    <span ng-show="abcFilters.sortType == 'item.valorCusto' && !abc.Filters.sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="abcFilters.sortType == 'item.valorCusto' && abc.Filters.sortReverse" class="fa fa-caret-up"></span>
+                  </th>
+                  <th  style="width:8%">
+ 
+                   Venda Un.
+                  </th> 
+                 <th  style="width:8%">
+
+                  Margem
+                    
+                  </th> 
+
+                 
+                  <th  style="width:8%;text-align:center;">NCM</th>
+                  
+                 
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr dir-paginate="item in abcData.table | orderBy:abcFilters.sortType:abc.Filters.sortReverse | filter:search 
+                  | filter:{ classe : '!'+abcFilters.blockA.classe }
+                  | filter:{ classe : '!'+abcFilters.blockB.classe } 
+                  | filter:{ classe : '!'+abcFilters.blockC.classe } | itemsPerPage: 300  " pagination-id="curvaAbc">
+                  <td class="large-text">
+                    <div class="circle circle-text" style="background:{{app.abc[item.classe]}}">
+                      <span class="title">
+                      {{item.classe}}
+                      </span>
+                    </div>
+                  </td>
+                  <td class="large-text">
+                    <span >{{item.pos}}º</span>
+                  </td>
+                  <td><a 
+                  ui-jq="colorbox" ui-options="{href:'{{app.settings.basePath}}/produto/{{item.idProduto}}', iframe: true, width: '95%',height: '95%'}">{{item.item}}</a><span style="display:none;">{{item.idProduto}}</span></td>
+                  <td>{{item.prcValor }} %</td>
+                  <td>{{item.qtdOriginal}}</td>
+                  <td>R$ {{item.valorTotal | moedaRealSemDecimal}}</td>
+                  <td>R$ {{item.valorCusto | moedaRealSemDecimal}}</td>
+                  <td>R$ {{item.valor | moedaRealSemDecimal}}</td>
+                  <td>{{item.margem }}%</td>
+                 
+                 
+                  <td>
+                    {{item.ncm}}
+
+                  </td>
+                 
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="text-align:center;">
+            <dir-pagination-controls  pagination-id="curvaAbc"></dir-pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>   
